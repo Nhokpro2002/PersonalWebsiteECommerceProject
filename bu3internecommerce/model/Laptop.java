@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "laptop_inventory")
+@Table(name = "laptop")
 @Getter
 @Setter
 public class Laptop {
@@ -27,11 +27,7 @@ public class Laptop {
     @Column(name = "stock")
     private int stock;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
-
-    @Override
+    /*@Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
@@ -39,9 +35,8 @@ public class Laptop {
                 ", category='" + category + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
-                ", cart=" + cart +
                 '}';
     }
-
+*/
 }
 

@@ -7,30 +7,23 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "cart")
+@Getter
+@Setter
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Laptop> products = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
-    public void addProduct(Laptop product) {
-        products.add(product);
-        product.setCart(this); // Cập nhật cart cho product
-    }
-
-    public void removeProduct(Laptop product) {
-        products.remove(product); // delete product from cart
-        product.setCart(null);
-    }
-
-
-
+    @OneToMany(mappedBy = "cart",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
 
 }

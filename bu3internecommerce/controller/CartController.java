@@ -1,78 +1,69 @@
 package com.newwave.bu3internecommerce.controller;
 
-
-import com.newwave.bu3internecommerce.dto.LaptopDTO;
-import com.newwave.bu3internecommerce.model.Cart;
+import com.newwave.bu3internecommerce.dto.CartDTO;
 import com.newwave.bu3internecommerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
+@RequestMapping("/cart")
 public class CartController {
 
     @Autowired
-    CartService cartService;
+    private CartService cartService;
 
     /**
-     * Add product to Shopping Cart
-     * @param cartId Shopping Cart is retrieved by cartId
-     * @param productId Product be added by productId
-     * @return Cart after updated
+     * Add laptop to Shopping Cart
+     * @param cartId The Shopping Cart
+     * @param productId The Laptop
+     * @param quantity The laptop quantity
+     * @return result
      */
-    @PostMapping("/cart/{cartId}/product/{productId}")
-    public ResponseEntity<Cart> addProductToCart(
+    @PostMapping("/{cartId}/add/{productId}/{quantity}")
+    public ResponseEntity<String> addToCart(
             @PathVariable Long cartId,
-            @PathVariable Long productId) {
-        Cart updatedCart = cartService.addProductToCart(cartId, productId);
-        return ResponseEntity.ok(updatedCart);
+            @PathVariable Long productId,
+            @PathVariable int quantity) {
+        cartService.addToCart(cartId, productId, quantity);
+        return ResponseEntity.ok("Laptop added to cart successfully");
     }
 
     /**
-     * Remove product from Shopping Cart
-     * @param cartId Shopping Cart is retrieved by cartId
-     * @param productId Product be removed by productId
-     * @return Cart after updated
+     *
+     * @param cartId
+     * @param productId
+     * @param quantity
+     * @return
      */
-    @DeleteMapping("/cart/{cartId}/product/{productId}")
-    public ResponseEntity<Cart> removeProductFromCart(
+    @PatchMapping("/{cartId}/remove/{productId}/{quantity}")
+    public ResponseEntity<String> removeFromCart(
             @PathVariable Long cartId,
-            @PathVariable Long productId) {
-        Cart updatedCart = cartService.removeProductInCart(cartId, productId);
-        return ResponseEntity.ok(updatedCart);
-    }
-
-
-    /**
-     * get all laptops in Cart
-     * @param cartId Shopping Cart is retrieved by cartId
-     * @return all laptops information in Shopping Cart
-     */
-    @GetMapping("/cart/{cartId}/products")
-    public List<LaptopDTO> showAllProducts(@PathVariable Long cartId) {
-        return cartService.getAll(cartId);
+            @PathVariable Long productId,
+            @PathVariable int quantity) {
+        cartService.removeFromCart(cartId, productId, quantity);
+        return ResponseEntity.ok("Laptop remove from cart successfully");
     }
 
     /**
-     * Get total price of Shopping Cart
-     * @param cartId Shopping Cart is retrieved by cartId
-     * @return total price f Shopping Cart
+     *
+     * @param cartId
+     * @return
      */
-    @GetMapping("/cart/{cartId}/price")
-    public double getTotalPriceOfCart(@PathVariable Long cartId) {
-        return cartService.getTotalPrice(cartId);
+    @GetMapping("/{cartId}/total-price")
+    public double getCartTotalPrice(@PathVariable Long cartId) {
+        return cartService.getCartTotalPrice(cartId);
     }
 
     /**
-     * Delete all laptops in Shopping Cart
-     * @param cartId Shopping Cart is retrieved by cartId
-     * @return Shopping Cart after delete all laptops
+     *
+     * @param cartId
+     * @return
      */
-    @DeleteMapping("/cart/{cartId}/")
-    public ResponseEntity<Cart> deleteAll(@PathVariable Long cartId) {
-        Cart updatedCart = cartService.removeAll(cartId);
-        return ResponseEntity.ok(updatedCart);
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartDTO> getCart(@PathVariable Long cartId) {
+        return ResponseEntity.ok(cartService.getCartById(cartId));
     }
+
+
 }

@@ -1,98 +1,120 @@
 package com.newwave.bu3internecommerce.service;
 
-import com.newwave.bu3internecommerce.dto.LaptopDTO;
+
+import com.newwave.bu3internecommerce.dto.CartDTO;
+import com.newwave.bu3internecommerce.dto.CartItemDTO;
 import com.newwave.bu3internecommerce.model.Cart;
+import com.newwave.bu3internecommerce.model.CartItem;
 import com.newwave.bu3internecommerce.model.Laptop;
+import com.newwave.bu3internecommerce.repository.CartItemRepository;
 import com.newwave.bu3internecommerce.repository.CartRepository;
 import com.newwave.bu3internecommerce.repository.LaptopRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Service
-@Transactional
 public class CartService {
-
     @Autowired
-    private LaptopRepository productRepository;
+    private CartItemRepository cartItemRepository;
 
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private LaptopRepository laptopRepository;
+
+
     /**
-     * Add product to Shopping Cart
-     * @param cartId cart is retrieved by cartId
-     * @param productId product be added to Shopping Cart
-     * @return
+     * Add number laptop to Shopping Cart
+     * @param cartId The Shopping Cart
+     * @param laptopId The Shopping Cart
+     * @param quantity The laptop quantity be added
      */
-    public Cart addProductToCart(Long cartId, Long productId) {
+    public void addToCart(Long cartId, Long laptopId, int quantity) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
-        Laptop product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+        Laptop laptop = laptopRepository.findById(laptopId)
+                .orElseThrow(() -> new RuntimeException("Laptop not found"));
 
-        cart.addProduct(product);
-        return cartRepository.save(cart); // save Shopping Cart in database
+        // check laptop is existing in Shopping Cart
+        Optional<CartItem> existingCartItem = cartItemRepository.findByCartAndLaptop(cart, laptop);
+
+        if (existingCartItem.isPresent()) {
+            // if laptop is existing, update quantity in Shopping Cart
+            CartItem cartItem = existingCartItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            cartItemRepository.save(cartItem);
+        } else {
+            // if not, create new
+            CartItem cartItem = new CartItem();
+            cartItem.setCart(cart);
+            cartItem.setLaptop(laptop);
+            cartItem.setQuantity(quantity);
+            cartItemRepository.save(cartItem);
+        }
     }
 
     /**
-     * Get all products in Shopping Cart
-     * @param cartId cart is retrieved by cartId
-     * @return all products information in Shopping Cart
+     *
+     * @param cartId
+     * @param laptopId
+     * @param quantity
      */
-    public List<LaptopDTO> getAll(Long cartId) {
+    public void removeFromCart(Long cartId, Long laptopId, int quantity) {
+
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
-        // return all products in Shopping Cart
-        return cart.getProducts().stream().map(LaptopDTO::new).collect(Collectors.toList());
+        Laptop laptop = laptopRepository.findById(laptopId)
+                .orElseThrow(() -> new RuntimeException("Laptop not found"));
+
+
+        CartItem cartItem = cartItemRepository.findByCartAndLaptop(cart, laptop)
+                .orElseThrow(() -> new RuntimeException("Laptop not found in cart"));
+
+        if (cartItem.getQuantity() <= quantity) {
+            cartItemRepository.delete(cartItem); // Remove item from cart if quantity reaches 0
+        }
+        else {
+            cartItem.setQuantity(cartItem.getQuantity() - quantity);
+            cartItemRepository.save(cartItem); // Update the cart item with new quantity
+        }
     }
 
-    /**
-     * remote the product from Shopping Cart
-     * @param cartId cart is retrieved by cartId
-     * @param productId product is got by productId
-     * @return Shopping Cart after remove product
-     */
-    public Cart removeProductInCart(Long cartId, Long productId) {
+
+    @Transactional
+    public CartDTO getCartById(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
-        Laptop product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        cart.removeProduct(product);
-        return cartRepository.save(cart);
+        List<CartItemDTO> cartItems = cart.getCartItems().stream()
+                .map(item -> new CartItemDTO(
+                        item.getLaptop().getId(),
+                        item.getQuantity(),
+                        item.getLaptop().getPrice()
+                ))
+                .collect(Collectors.toList());
+
+        double totalPrice = 0.0;
+        for(CartItemDTO cartItemDTO: cartItems) {
+            totalPrice += cartItemDTO.getPrice() * cartItemDTO.getQuantity();
+        }
+
+        return new CartDTO(cartId, cartItems, totalPrice);
     }
 
-    /**
-     * Get total price of Shopping Cart
-     * @param cartId cart is retrieved by cartId
-     * @return total price of all products in Shopping Cart
-     */
-    public double getTotalPrice(Long cartId) {
-       List<LaptopDTO> productDTOList = getAll(cartId);
-       double totalPrice = 0;
-       for (LaptopDTO productDTO: productDTOList) {
-           totalPrice += productDTO.getPrice();
-       }
-       return totalPrice;
+    @Transactional
+    public double getCartTotalPrice(Long cartId) {
+        CartDTO cartDTO = getCartById(cartId);
+        double totalPrice = 0;
+        for(CartItemDTO cartItemDTO: cartDTO.getCartItems()) {
+            totalPrice += cartItemDTO.getPrice() * cartItemDTO.getQuantity();
+        }
+        return totalPrice;
     }
 
-
-    /**
-     * Delete all products in Shopping Cart
-     * @param cartId cart is retrieved by cartId
-     * @return empty Shopping Cart
-     */
-    public Cart removeAll(Long cartId) {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
-        //productRepository.deleteAllById();
-        productRepository.removeAllProductsFromCart(cartId);
-        return cart;
-    }
 }
-

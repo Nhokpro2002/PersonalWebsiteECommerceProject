@@ -1,0 +1,13 @@
++ Laptop có một thuộc tính là giá (price)
+khi thêm laptop vào kho: nếu laptop chưa có trong kho nó sẽ thêm mới
+                         nếu có rồi thì sẽ cập nhập số lượng, giữ nguyên giá cũ ở kho
+=> nên có thêm thuộc tính giá mua và giá bạn
+
++ Vấn đề về việc bán hàng trong kho(inventory)
+logic: kiểm tra số lượng hàng hàng trong kho có đủ với số lượng khách hàng yêu cầu không
+nếu đủ thì sẽ bán va cap nhap lại stock trong kho
+nếu không thì báo không đủ
+=> Nên thiết kế chương trình để tương tác với Cart
+VD: khách hàng thêm sản phẩm và số lượng vào cart, chương trình kiểm tra số lượng và hàng trong kho
+nếu thỏa mãn yêu caauf thì sẽ bán hàng và cập nhập lại số lượng
+nếu không thì báo không đủ mặt hàng
