@@ -1,1 +1,10 @@
-GET http://localhost:8080/cart/1
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+"userName": "Spring Security",
+"password": "learnSpringSecurity",
+"firstName": "Security",
+"lastName": "Spring",
+"localDate": "2019-09-17"
+}
