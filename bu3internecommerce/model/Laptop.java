@@ -22,21 +22,13 @@ public class Laptop {
     private String category;
 
     @Column(name = "price")
-    private double price;
+    private double sellingPrice;
 
     @Column(name = "stock")
     private int stock;
 
-    /*@Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
-                '}';
-    }
-*/
+    @Column(name = "import_price")
+    private double importPrice;
+
 }
 

@@ -1,10 +1,7 @@
-POST http://localhost:8080/users
+POST http://localhost:8080/auth/log-in
 Content-Type: application/json
 
 {
-"userName": "Spring Security",
-"password": "learnSpringSecurity",
-"firstName": "Security",
-"lastName": "Spring",
-"localDate": "2019-09-17"
+"userName": "IBoy2k1",
+"password": "boyhandsome"
 }

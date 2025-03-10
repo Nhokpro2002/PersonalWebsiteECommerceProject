@@ -86,6 +86,11 @@ public class CartService {
     }
 
 
+    /**
+     *
+     * @param cartId
+     * @return
+     */
     @Transactional
     public CartDTO getCartById(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
@@ -95,7 +100,7 @@ public class CartService {
                 .map(item -> new CartItemDTO(
                         item.getLaptop().getId(),
                         item.getQuantity(),
-                        item.getLaptop().getPrice()
+                        item.getLaptop().getSellingPrice()
                 ))
                 .collect(Collectors.toList());
 
@@ -107,6 +112,11 @@ public class CartService {
         return new CartDTO(cartId, cartItems, totalPrice);
     }
 
+    /**
+     *
+     * @param cartId
+     * @return
+     */
     @Transactional
     public double getCartTotalPrice(Long cartId) {
         CartDTO cartDTO = getCartById(cartId);

@@ -11,3 +11,5 @@ nếu không thì báo không đủ
 VD: khách hàng thêm sản phẩm và số lượng vào cart, chương trình kiểm tra số lượng và hàng trong kho
 nếu thỏa mãn yêu caauf thì sẽ bán hàng và cập nhập lại số lượng
 nếu không thì báo không đủ mặt hàng
++ Vấn đề về đăng nhập với userName và mật khẩu:
+Chưa xac thuc dang nhap duoc

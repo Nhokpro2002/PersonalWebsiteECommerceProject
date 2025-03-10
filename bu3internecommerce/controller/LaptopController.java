@@ -1,13 +1,14 @@
 package com.newwave.bu3internecommerce.controller;
 
 
+import com.newwave.bu3internecommerce.dto.LaptopDTO;
 import com.newwave.bu3internecommerce.model.Laptop;
 import com.newwave.bu3internecommerce.service.LaptopService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/laptops")
@@ -23,14 +24,6 @@ public class LaptopController {
     @PostMapping()
     public void importLaptop(@RequestBody Laptop laptop) {
         laptopService.importLaptop(laptop);
-    }
-
-    /**
-     * return all laptops in inventory
-     */
-    @GetMapping()
-    public List<Laptop> getLaptops() {
-        return laptopService.getLaptops();
     }
 
     /**
@@ -53,6 +46,16 @@ public class LaptopController {
     public void sellLaptop(@PathVariable String laptopName,
                            @PathVariable int quantity) {
         laptopService.sellLaptop(laptopName, quantity);
+    }
+
+    /**
+     *
+     * @param pageable
+     * @return
+     */
+    @GetMapping
+    public Page<LaptopDTO> getLaptops(Pageable pageable) {
+        return laptopService.findAll(pageable);
     }
 
 

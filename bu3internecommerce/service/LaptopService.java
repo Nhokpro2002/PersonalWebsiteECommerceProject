@@ -1,14 +1,16 @@
 package com.newwave.bu3internecommerce.service;
 
 
+import com.newwave.bu3internecommerce.dto.LaptopDTO;
 import com.newwave.bu3internecommerce.model.Laptop;
 import com.newwave.bu3internecommerce.repository.LaptopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,17 +65,27 @@ public class LaptopService {
     public void updatePrice(String laptopName, double newPrice) {
         Laptop laptop = laptopRepository.findByName(laptopName)
                 .orElseThrow(() -> new RuntimeException("Laptop not found"));
-        laptop.setPrice(newPrice);
+        laptop.setSellingPrice(newPrice);
         laptopRepository.save(laptop);
     }
 
     /**
-     * Get all laptops information inventory
-     * @return all laptops information in inventory
+     *
+     * @param pageable
+     * @return
      */
-    public List<Laptop> getLaptops() {
+    public Page<LaptopDTO> findAll(Pageable pageable) {
+        Page<Laptop> laptopPage = laptopRepository.findAll(pageable);
+        return laptopPage.map(this::convertToDTO);
+    }
 
-        return laptopRepository.findAll();
+    /**
+     *
+     * @param laptop
+     * @return
+     */
+    public LaptopDTO convertToDTO(Laptop laptop) {
+        return new LaptopDTO(laptop);
     }
 
 

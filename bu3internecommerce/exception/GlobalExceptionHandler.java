@@ -15,18 +15,46 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponse> handlingRunTimeException(
             RuntimeException runtimeException) {
+
         ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setCode(1000);
+        apiResponse.setCode(500);
         apiResponse.setMessage(runtimeException.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
+
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse> handlingAppException(
+            AppException appException) {
+        ErrorCode errorCode = appException.getErrorCode();
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+        return ResponseEntity.badRequest().body(apiResponse);
+    }
+
     @ExceptionHandler(value  = MethodArgumentNotValidException.class)
-    ResponseEntity<String> handlingValidation(
+    ResponseEntity<ApiResponse> handlingValidation(
             MethodArgumentNotValidException methodArgumentNotValidException) {
-        return ResponseEntity.badRequest().body(Objects.requireNonNull(methodArgumentNotValidException
-                        .getFieldError())
-                .getDefaultMessage());
+        String enumKey = methodArgumentNotValidException
+                .getFieldError().getDefaultMessage();
+        ErrorCode errorCode = ErrorCode.INVALID_KEY;
+
+        try {
+            errorCode = ErrorCode.valueOf(enumKey);
+        }
+        catch (IllegalArgumentException e) {
+
+        }
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+
+        return ResponseEntity.badRequest().body(apiResponse);
     }
 }
