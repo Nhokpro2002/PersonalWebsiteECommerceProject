@@ -1,11 +1,9 @@
 package com.newwave.bu3internecommerce.controller;
 
 
-import com.newwave.bu3internecommerce.dto.LaptopDTO;
+import com.newwave.bu3internecommerce.dto.response.LaptopResponseDTO;
 import com.newwave.bu3internecommerce.model.Laptop;
 import com.newwave.bu3internecommerce.service.LaptopService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/laptops")
 public class LaptopController {
 
-    @Autowired
-    LaptopService laptopService;
+    private final LaptopService laptopService;
+
+    public LaptopController(LaptopService laptopService) {
+        this.laptopService = laptopService;
+    }
 
     /**
      * Import laptops to Inventory
@@ -28,7 +29,7 @@ public class LaptopController {
 
     /**
      * Update new price for laptop
-     * @param laptopName The laptop
+     * @param laptopName The laptop name of laptop
      * @param newPrice The new price for laptop
      */
     @PatchMapping("/name/{laptopName}/newPrice/{newPrice}")
@@ -38,9 +39,9 @@ public class LaptopController {
     }
 
     /**
-     * export laptop from inventory
-     * @param laptopName The Laptop
-     * @param quantity The quantity be requested
+     * Sell laptop from inventory
+     * @param laptopName The laptop name of laptop
+     * @param quantity The laptop quantity be sold
      */
     @PatchMapping("/name/{laptopName}/quantity/{quantity}")
     public void sellLaptop(@PathVariable String laptopName,
@@ -49,12 +50,13 @@ public class LaptopController {
     }
 
     /**
+     * Retrieves a paginated list of all laptops.
      *
-     * @param pageable
-     * @return
+     * @param pageable Pagination details including page number and size.
+     * @return A paginated list of LaptopResponseDTO objects.
      */
     @GetMapping
-    public Page<LaptopDTO> getLaptops(Pageable pageable) {
+    public Page<LaptopResponseDTO> getLaptops(Pageable pageable) {
         return laptopService.findAll(pageable);
     }
 

@@ -1,12 +1,10 @@
-package com.newwave.bu3internecommerce.model;
+package com.newwave.bu3internecommerce.model.shoppingcart;
 
 
+import com.newwave.bu3internecommerce.model.Laptop;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Table(name = "cart_item")
@@ -28,4 +26,13 @@ public class CartItem {
     @Column(nullable = false)
     private int quantity;
 
+    public CartItem(Cart cart, Laptop laptop, int quantity) {
+        this.cart = cart;
+        this.laptop = laptop;
+        this.quantity = quantity;
+    }
+
+    public CartItem() {
+
+    }
 }

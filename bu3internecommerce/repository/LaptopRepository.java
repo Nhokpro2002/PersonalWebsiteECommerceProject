@@ -1,6 +1,5 @@
 package com.newwave.bu3internecommerce.repository;
 
-import com.newwave.bu3internecommerce.dto.LaptopDTO;
 import com.newwave.bu3internecommerce.model.Laptop;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

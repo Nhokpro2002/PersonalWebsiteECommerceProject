@@ -4,11 +4,8 @@ import com.newwave.bu3internecommerce.dto.request.UserCreationRequest;
 import com.newwave.bu3internecommerce.dto.request.UserUpdateRequest;
 import com.newwave.bu3internecommerce.dto.response.ApiResponse;
 import com.newwave.bu3internecommerce.dto.response.UserResponseDTO;
-import com.newwave.bu3internecommerce.model.User;
-import com.newwave.bu3internecommerce.repository.LaptopRepository;
 import com.newwave.bu3internecommerce.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -18,67 +15,74 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private LaptopRepository laptopRepository;
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
-     *
-     * @param userCreationRequest
-     * @return
+     * Inform result of create new User
+     * @param userCreationRequest The request create new User: firstName, lastName, ...
+     * @return result of create new User
      */
     @PostMapping()
     public ApiResponse<UserResponseDTO> createUser(
             @RequestBody @Valid UserCreationRequest userCreationRequest) {
-
         ApiResponse<UserResponseDTO> apiResponse =  new ApiResponse<>();
         apiResponse.setResult(userService.createUser(userCreationRequest));
-
         return apiResponse;
     }
 
     /**
-     *
-     * @param userId
-     * @return
+     * Get User by userId
+     * @param userId The userId of User
+     * @return UserResponseDTO contain information User details
      */
     @GetMapping("/userId/{userId}")
-    public User getUser(@PathVariable Long userId) {
-        return userService.getUser(userId);
+    public ApiResponse<UserResponseDTO> getUser(@PathVariable Long userId) {
+        ApiResponse<UserResponseDTO> apiResponse =  new ApiResponse<>();
+        apiResponse.setResult(userService.getUser(userId));
+        return apiResponse;
     }
 
     /**
-     *
-     * @param userId
-     * @param userUpdateRequest
-     * @return
+     * update information for User
+     * @param userId The userId of User
+     * @param userUpdateRequest The request update User contain: firstName, lastName, password, ...
+     * @return UserResponseDTO contain information User details
      */
     @PutMapping("/userId/{userId}")
-    UserResponseDTO updateUser(@PathVariable Long userId,
+    public ApiResponse<UserResponseDTO> updateUser(@PathVariable Long userId,
                     @RequestBody UserUpdateRequest userUpdateRequest) {
-        return userService.updateUser(userId, userUpdateRequest);
-
+        ApiResponse<UserResponseDTO> apiResponse =  new ApiResponse<>();
+        apiResponse.setResult(userService.updateUser(userId, userUpdateRequest));
+        return apiResponse;
     }
 
     /**
-     *
-     * @param userId
-     * @return
+     * Delete the User by userId
+     * @param userId The userId of User
+     * @return result delete User
      */
     @DeleteMapping("/userId/{userId}")
-    String deleteUser(@PathVariable Long userId) {
+    public ApiResponse<String> deleteUser(@PathVariable Long userId) {
         userService.delete(userId);
-        return "delete User successfully";
+        ApiResponse<String> apiResponse =  new ApiResponse<>();
+        apiResponse.setMessage("Delete user successfuly");
+        return apiResponse;
     }
 
     /**
+     * Retrieves a paginated list of all users.
      *
-     * @param pageable
-     * @return
+     * @param pageable Pagination details including page number and size.
+     * @return A paginated list of UserResponseDTO objects.
      */
     @GetMapping
-    public Page findAll(Pageable pageable) {
+    public Page<UserResponseDTO> findAll(Pageable pageable) {
+
         return userService.findAll(pageable);
     }
 }

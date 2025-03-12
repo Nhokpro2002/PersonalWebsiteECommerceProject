@@ -1,4 +1,4 @@
-package com.newwave.bu3internecommerce.dto;
+package com.newwave.bu3internecommerce.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;

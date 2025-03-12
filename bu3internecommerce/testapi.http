@@ -1,7 +1,1 @@
-POST http://localhost:8080/auth/log-in
-Content-Type: application/json
-
-{
-"userName": "IBoy2k1",
-"password": "boyhandsome"
-}
+GET http://localhost:8080/cart/1

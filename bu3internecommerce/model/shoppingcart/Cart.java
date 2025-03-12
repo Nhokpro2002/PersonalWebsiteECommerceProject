@@ -1,5 +1,6 @@
-package com.newwave.bu3internecommerce.model;
+package com.newwave.bu3internecommerce.model.shoppingcart;
 
+import com.newwave.bu3internecommerce.model.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

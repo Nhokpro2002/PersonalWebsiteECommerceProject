@@ -1,15 +1,19 @@
-+ Laptop có một thuộc tính là giá (price)
-khi thêm laptop vào kho: nếu laptop chưa có trong kho nó sẽ thêm mới
-                         nếu có rồi thì sẽ cập nhập số lượng, giữ nguyên giá cũ ở kho
-=> nên có thêm thuộc tính giá mua và giá bạn
+1. Vấn đề với việc tạo đơn hàng
 
-+ Vấn đề về việc bán hàng trong kho(inventory)
-logic: kiểm tra số lượng hàng hàng trong kho có đủ với số lượng khách hàng yêu cầu không
-nếu đủ thì sẽ bán va cap nhap lại stock trong kho
-nếu không thì báo không đủ
-=> Nên thiết kế chương trình để tương tác với Cart
-VD: khách hàng thêm sản phẩm và số lượng vào cart, chương trình kiểm tra số lượng và hàng trong kho
-nếu thỏa mãn yêu caauf thì sẽ bán hàng và cập nhập lại số lượng
-nếu không thì báo không đủ mặt hàng
-+ Vấn đề về đăng nhập với userName và mật khẩu:
-Chưa xac thuc dang nhap duoc
+Đã tạo được đơn hàng và trả về json các items(laptop) có trong cái đơn hàng đó
+Đơn hàng được tạo ra từ Shopping Cart dựa theo cartId, các món đồ được ánh xạ từ Shopping Cart qua
+=> khi tạo đơn hàng xong thì xóa các món đồ đó trong Shopping Cart
+Logic: cần thêm items vào giỏ hàng trước khi tạo đơn hàng (Orders)
+
+Vấn đề: Order trả về thông tin của đơn hàng nhiều hơn mức cho phép (như giá nhập vào kho) => cần sửa
+        Shopping Cart thêm số lượng hàng nhiều hơn số lượng trong kho => cần sửa
+        Đơn hàng chưa trả về được giá tiền của đơn hàng
+
+2. Vấn đề với Spring Security
++ Chưa làm đăng kí đăng nhập với JWT được: cần hoàn thiện sớm
+
+
+
+
+
+

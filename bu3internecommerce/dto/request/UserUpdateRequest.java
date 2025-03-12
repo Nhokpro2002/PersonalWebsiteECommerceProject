@@ -1,6 +1,7 @@
 package com.newwave.bu3internecommerce.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.newwave.bu3internecommerce.model.User;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,15 @@ public class UserUpdateRequest {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate localDate;
+
+    public User updateUser(UserUpdateRequest userUpdateRequest, User user) {
+        user.setPassword(userUpdateRequest.getPassword());
+        user.setLocalDate(userUpdateRequest.getLocalDate());
+        user.setLastName(userUpdateRequest.getLastName());
+        user.setFirstName(userUpdateRequest.getFirstName());
+        user.setUserName(userUpdateRequest.getUserName());
+        return user;
+    }
+
 
 }

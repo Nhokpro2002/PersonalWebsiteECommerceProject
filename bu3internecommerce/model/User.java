@@ -1,5 +1,6 @@
 package com.newwave.bu3internecommerce.model;
 
+import com.newwave.bu3internecommerce.dto.request.UserUpdateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,14 @@ public class User {
     private String firstName;
     private String lastName;
     private LocalDate localDate;
+
+    public void updateFrom(UserUpdateRequest userUpdateRequest) {
+        this.password = userUpdateRequest.getPassword();
+        this.localDate = userUpdateRequest.getLocalDate();
+        this.lastName = userUpdateRequest.getLastName();
+        this.firstName = userUpdateRequest.getFirstName();
+        this.userName = userUpdateRequest.getUserName();
+    }
 
 
 }

@@ -1,10 +1,11 @@
 package com.newwave.bu3internecommerce.service;
 
 
-import com.newwave.bu3internecommerce.dto.LaptopDTO;
+import com.newwave.bu3internecommerce.dto.response.LaptopResponseDTO;
+import com.newwave.bu3internecommerce.exception.AppException;
+import com.newwave.bu3internecommerce.exception.ErrorCode;
 import com.newwave.bu3internecommerce.model.Laptop;
 import com.newwave.bu3internecommerce.repository.LaptopRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,11 @@ import java.util.Optional;
 @RequestMapping("/laptops")
 public class LaptopService {
 
-    @Autowired
-    LaptopRepository laptopRepository;
+    private final LaptopRepository laptopRepository;
+
+    public LaptopService(LaptopRepository laptopRepository) {
+        this.laptopRepository = laptopRepository;
+    }
 
     /**
      * Add Laptop into inventory, if laptop is existing so update, if no so add new
@@ -30,10 +34,10 @@ public class LaptopService {
             Laptop existingLaptop = temporaryLaptop.get();
             existingLaptop.setStock(laptop.getStock() + existingLaptop.getStock());
             laptopRepository.save(existingLaptop);
-        }
-        else {
+        } else {
             laptopRepository.save(laptop);
         }
+
     }
 
     /**
@@ -51,10 +55,10 @@ public class LaptopService {
                 laptopRepository.save(existingLaptop);
             }
 
-        }
-        else {
+        } else {
             System.out.println("Not enough quantity in inventory");
         }
+
     }
 
     /**
@@ -64,28 +68,30 @@ public class LaptopService {
      */
     public void updatePrice(String laptopName, double newPrice) {
         Laptop laptop = laptopRepository.findByName(laptopName)
-                .orElseThrow(() -> new RuntimeException("Laptop not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.LAPTOP_NOT_EXISTED));
         laptop.setSellingPrice(newPrice);
         laptopRepository.save(laptop);
     }
 
     /**
+     * Retrieves a paginated list of all laptops.
      *
-     * @param pageable
-     * @return
+     * @param pageable Pagination details including page number and size.
+     * @return A paginated list of LaptopResponseDTO objects.
      */
-    public Page<LaptopDTO> findAll(Pageable pageable) {
+    public Page<LaptopResponseDTO> findAll(Pageable pageable) {
         Page<Laptop> laptopPage = laptopRepository.findAll(pageable);
         return laptopPage.map(this::convertToDTO);
     }
 
     /**
+     * Converts a Laptop entity to a LaptopResponseDTO.
      *
-     * @param laptop
-     * @return
+     * @param laptop The Laptop entity to convert.
+     * @return A LaptopResponseDTO containing the laptop's details.
      */
-    public LaptopDTO convertToDTO(Laptop laptop) {
-        return new LaptopDTO(laptop);
+    public LaptopResponseDTO convertToDTO(Laptop laptop) {
+        return LaptopResponseDTO.fromEntity(laptop);
     }
 
 
