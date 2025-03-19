@@ -1,6 +1,6 @@
 package com.newwave.bu3internecommerce.repository;
 
-import com.newwave.bu3internecommerce.model.Laptop;
+import com.newwave.bu3internecommerce.entity.Laptop;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

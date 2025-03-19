@@ -1,12 +1,12 @@
 package com.newwave.bu3internecommerce.controller;
 
-import com.newwave.bu3internecommerce.dto.response.CartDTO;
+import com.newwave.bu3internecommerce.dto.CartDTO;
 import com.newwave.bu3internecommerce.service.CartService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/carts")
 public class CartController {
 
     private final CartService cartService;

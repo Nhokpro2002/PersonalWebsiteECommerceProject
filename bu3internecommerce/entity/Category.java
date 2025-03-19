@@ -1,4 +1,4 @@
-package com.newwave.bu3internecommerce.model;
+package com.newwave.bu3internecommerce.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

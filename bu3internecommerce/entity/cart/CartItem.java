@@ -1,7 +1,7 @@
-package com.newwave.bu3internecommerce.model.shoppingcart;
+package com.newwave.bu3internecommerce.entity.cart;
 
 
-import com.newwave.bu3internecommerce.model.Laptop;
+import com.newwave.bu3internecommerce.entity.Laptop;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

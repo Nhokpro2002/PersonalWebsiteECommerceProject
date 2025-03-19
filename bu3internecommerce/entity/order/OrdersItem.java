@@ -1,7 +1,7 @@
-package com.newwave.bu3internecommerce.model.order;
+package com.newwave.bu3internecommerce.entity.order;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.newwave.bu3internecommerce.model.Laptop;
+import com.newwave.bu3internecommerce.entity.Laptop;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "order_item")
-public class OrderItem {
+public class OrdersItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,13 +28,13 @@ public class OrderItem {
     @Column(nullable = false)
     private int quantity;
 
-    public OrderItem(Orders orders, Laptop laptop, int quantity) {
+    public OrdersItem(Orders orders, Laptop laptop, int quantity) {
         this.orders = orders;
         this.laptop = laptop;
         this.quantity = quantity;
     }
 
-    public OrderItem() {
+    public OrdersItem() {
 
     }
 }

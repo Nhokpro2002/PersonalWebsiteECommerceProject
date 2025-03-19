@@ -6,7 +6,6 @@
 Logic: cần thêm items vào giỏ hàng trước khi tạo đơn hàng (Orders)
 
 Vấn đề: Order trả về thông tin của đơn hàng nhiều hơn mức cho phép (như giá nhập vào kho) => cần sửa
-        Shopping Cart thêm số lượng hàng nhiều hơn số lượng trong kho => cần sửa
         Đơn hàng chưa trả về được giá tiền của đơn hàng
 
 2. Vấn đề với Spring Security

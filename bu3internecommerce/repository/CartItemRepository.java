@@ -1,8 +1,8 @@
 package com.newwave.bu3internecommerce.repository;
 
-import com.newwave.bu3internecommerce.model.shoppingcart.Cart;
-import com.newwave.bu3internecommerce.model.shoppingcart.CartItem;
-import com.newwave.bu3internecommerce.model.Laptop;
+import com.newwave.bu3internecommerce.entity.cart.Cart;
+import com.newwave.bu3internecommerce.entity.cart.CartItem;
+import com.newwave.bu3internecommerce.entity.Laptop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,4 @@
-package com.newwave.bu3internecommerce.dto.request;
-
+package com.newwave.bu3internecommerce.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,11 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class AuthenticationRequest {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserLoginRequest {
     private String userName;
     private String password;
 }
-

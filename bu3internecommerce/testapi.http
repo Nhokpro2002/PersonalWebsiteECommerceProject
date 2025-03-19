@@ -1,1 +1,2 @@
-GET http://localhost:8080/cart/1
+POST http://localhost:8080/carts/1/add/1/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsInN1YiI6IkdlbjFUZXN0IiwiZXhwIjoxNzQyMzYyMjYzLCJpYXQiOjE3NDIzNTg2NjN9.iIa0O01f3i54UJiIxSj7157EbqQ9k2npkGy-I8oJhkc

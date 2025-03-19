@@ -1,8 +1,8 @@
 package com.newwave.bu3internecommerce.controller;
 
 
-import com.newwave.bu3internecommerce.dto.response.LaptopResponseDTO;
-import com.newwave.bu3internecommerce.model.Laptop;
+import com.newwave.bu3internecommerce.dto.LaptopDTO;
+import com.newwave.bu3internecommerce.entity.Laptop;
 import com.newwave.bu3internecommerce.service.LaptopService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ public class LaptopController {
      * @param laptop The laptop be added in inventory
      */
     @PostMapping()
-    public void importLaptop(@RequestBody Laptop laptop) {
+    public void createLaptop(@RequestBody Laptop laptop) {
         laptopService.importLaptop(laptop);
     }
 
@@ -39,24 +39,13 @@ public class LaptopController {
     }
 
     /**
-     * Sell laptop from inventory
-     * @param laptopName The laptop name of laptop
-     * @param quantity The laptop quantity be sold
-     */
-    @PatchMapping("/name/{laptopName}/quantity/{quantity}")
-    public void sellLaptop(@PathVariable String laptopName,
-                           @PathVariable int quantity) {
-        laptopService.sellLaptop(laptopName, quantity);
-    }
-
-    /**
      * Retrieves a paginated list of all laptops.
      *
      * @param pageable Pagination details including page number and size.
      * @return A paginated list of LaptopResponseDTO objects.
      */
     @GetMapping
-    public Page<LaptopResponseDTO> getLaptops(Pageable pageable) {
+    public Page<LaptopDTO> getLaptops(Pageable pageable) {
         return laptopService.findAll(pageable);
     }
 

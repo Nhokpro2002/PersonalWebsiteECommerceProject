@@ -1,9 +1,12 @@
-package com.newwave.bu3internecommerce.model;
+package com.newwave.bu3internecommerce.entity;
 
 import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "laptop")
@@ -29,6 +32,9 @@ public class Laptop {
 
     @Column(name = "import_price")
     private double importPrice;
+
+    @OneToMany(mappedBy = "laptop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LaptopImage> images = new ArrayList<>();
 
 }
 

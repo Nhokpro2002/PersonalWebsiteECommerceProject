@@ -1,22 +1,18 @@
 package com.newwave.bu3internecommerce.service;
 
 
-import com.newwave.bu3internecommerce.dto.response.CartDTO;
-import com.newwave.bu3internecommerce.dto.response.CartItemDTO;
+import com.newwave.bu3internecommerce.dto.CartDTO;
+import com.newwave.bu3internecommerce.entity.user.User;
 import com.newwave.bu3internecommerce.exception.AppException;
 import com.newwave.bu3internecommerce.exception.ErrorCode;
-import com.newwave.bu3internecommerce.model.shoppingcart.Cart;
-import com.newwave.bu3internecommerce.model.shoppingcart.CartItem;
-import com.newwave.bu3internecommerce.model.Laptop;
+import com.newwave.bu3internecommerce.entity.cart.Cart;
+import com.newwave.bu3internecommerce.entity.cart.CartItem;
+import com.newwave.bu3internecommerce.entity.Laptop;
 import com.newwave.bu3internecommerce.repository.CartItemRepository;
 import com.newwave.bu3internecommerce.repository.CartRepository;
 import com.newwave.bu3internecommerce.repository.LaptopRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -42,33 +38,29 @@ public class CartService {
      * @param laptopId The laptopId of Laptop
      * @param quantity The laptop quantity be added
      */
-    // FIXME: Shopping Cart can save laptop quantities more than stock in inventory
-    // FIXME: Example: in inventory have 10 laptop, Shopping Cart add 7, after add 5, so is 12 but Cart can save them
     public void addToCart(Long cartId, Long laptopId, int quantity) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_EXISTED));
         Laptop laptop = laptopRepository.findById(laptopId)
                 .orElseThrow(() -> new AppException(ErrorCode.LAPTOP_NOT_EXISTED));
 
-        // check laptop is existing in Shopping Cart
-        Optional<CartItem> existingCartItem = cartItemRepository.findByCartAndLaptop(cart, laptop);
-
-        CartItem cartItem;
-        if (quantity <= laptop.getStock()) {
-            if (existingCartItem.isPresent()) {
-                // if laptop is existing, update quantity in Shopping Cart
-                cartItem = existingCartItem.get();
-                cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            } else {
-                // if not, create new
-                cartItem = new CartItem(cart, laptop, quantity);
-            }
-            cartItemRepository.save(cartItem);
-        } else {
-            throw new RuntimeException("laptop quantity in inventory not enough");
-        }
-
-
+        cartItemRepository.findByCartAndLaptop(cart, laptop)
+                .ifPresentOrElse(
+                        cartItem -> {
+                            int newQuantity = cartItem.getQuantity() + quantity;
+                            if (newQuantity > laptop.getStock()) {
+                                throw new RuntimeException("Not enough stock in inventory");
+                            }
+                            cartItem.setQuantity(newQuantity);
+                            cartItemRepository.save(cartItem);
+                        },
+                        () -> {
+                            if (quantity > laptop.getStock()) {
+                                throw new RuntimeException("Not enough stock in inventory");
+                            }
+                            cartItemRepository.save(new CartItem(cart, laptop, quantity));
+                        }
+                );
     }
 
     /**
@@ -104,21 +96,7 @@ public class CartService {
     public CartDTO getCartById(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
-
-        List<CartItemDTO> cartItems = cart.getCartItems().stream()
-                .map(item -> new CartItemDTO(
-                        item.getLaptop().getId(),
-                        item.getQuantity(),
-                        item.getLaptop().getSellingPrice()
-                ))
-                .collect(Collectors.toList());
-
-        // Calculate total price using Stream
-        double totalPrice = cartItems.stream()
-                .mapToDouble(cartItem -> cartItem.getPrice() * cartItem.getQuantity())
-                .sum();
-
-        return new CartDTO(cartId, cartItems, totalPrice);
+        return CartDTO.mappingFromCart(cart);
     }
 
 
@@ -136,5 +114,18 @@ public class CartService {
                 .mapToDouble(item -> item.getLaptop().getSellingPrice() * item.getQuantity())
                 .sum();
     }
+
+    /**
+     * Create Cart for new User, Set cartId is userId
+     * @param newUser The new User
+     * @return Result success/fail
+     */
+    public String createCart(User newUser) {
+        Cart newCart = new Cart();
+        newCart.setId(newUser.getId());
+        cartRepository.save(newCart);
+        return "new Shopping Cart for new User";
+    }
+
 
 }

@@ -1,6 +1,6 @@
-package com.newwave.bu3internecommerce.model.shoppingcart;
+package com.newwave.bu3internecommerce.entity.cart;
 
-import com.newwave.bu3internecommerce.model.Customer;
+import com.newwave.bu3internecommerce.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +19,8 @@ public class Cart {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToMany(mappedBy = "cart",
             cascade = CascadeType.ALL,

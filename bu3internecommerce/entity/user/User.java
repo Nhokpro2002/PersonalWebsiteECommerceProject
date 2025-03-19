@@ -1,10 +1,7 @@
-package com.newwave.bu3internecommerce.model;
+package com.newwave.bu3internecommerce.entity.user;
 
-import com.newwave.bu3internecommerce.dto.request.UserUpdateRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.newwave.bu3internecommerce.model.request.UserUpdateRequest;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -26,14 +23,17 @@ public class User {
     private String firstName;
     private String lastName;
     private LocalDate localDate;
+    private String email;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public void updateFrom(UserUpdateRequest userUpdateRequest) {
+    /*public void updateFrom(UserUpdateRequest userUpdateRequest) {
         this.password = userUpdateRequest.getPassword();
         this.localDate = userUpdateRequest.getLocalDate();
         this.lastName = userUpdateRequest.getLastName();
         this.firstName = userUpdateRequest.getFirstName();
         this.userName = userUpdateRequest.getUserName();
     }
-
+*/
 
 }

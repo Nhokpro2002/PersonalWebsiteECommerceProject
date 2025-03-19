@@ -1,4 +1,4 @@
-package com.newwave.bu3internecommerce.dto.response;
+package com.newwave.bu3internecommerce.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

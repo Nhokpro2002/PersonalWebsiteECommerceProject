@@ -1,4 +1,4 @@
-package com.newwave.bu3internecommerce.model.order;
+package com.newwave.bu3internecommerce.entity.order;
 
 public enum OrderStatus {
     PENDING, //The order has been placed but not yet processed.

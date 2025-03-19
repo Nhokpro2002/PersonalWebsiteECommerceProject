@@ -1,13 +1,11 @@
 package com.newwave.bu3internecommerce.exception;
 
 
-import com.newwave.bu3internecommerce.dto.response.ApiResponse;
+import com.newwave.bu3internecommerce.model.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

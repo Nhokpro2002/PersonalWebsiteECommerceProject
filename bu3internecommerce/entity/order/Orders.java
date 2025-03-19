@@ -1,8 +1,8 @@
-package com.newwave.bu3internecommerce.model.order;
+package com.newwave.bu3internecommerce.entity.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.newwave.bu3internecommerce.model.shoppingcart.Cart;
+import com.newwave.bu3internecommerce.entity.cart.Cart;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +34,6 @@ public class Orders {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrdersItem> orderItems = new ArrayList<>();
 
 }

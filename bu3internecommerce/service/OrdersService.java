@@ -1,15 +1,18 @@
 package com.newwave.bu3internecommerce.service;
 
-import com.newwave.bu3internecommerce.dto.response.OrdersDTO;
+import com.newwave.bu3internecommerce.dto.OrdersDTO;
 import com.newwave.bu3internecommerce.exception.AppException;
 import com.newwave.bu3internecommerce.exception.ErrorCode;
-import com.newwave.bu3internecommerce.model.order.OrderItem;
-import com.newwave.bu3internecommerce.model.order.OrderStatus;
-import com.newwave.bu3internecommerce.model.order.Orders;
-import com.newwave.bu3internecommerce.model.shoppingcart.Cart;
-import com.newwave.bu3internecommerce.model.shoppingcart.CartItem;
+import com.newwave.bu3internecommerce.entity.Laptop;
+import com.newwave.bu3internecommerce.entity.order.OrdersItem;
+import com.newwave.bu3internecommerce.entity.order.OrderStatus;
+import com.newwave.bu3internecommerce.entity.order.Orders;
+import com.newwave.bu3internecommerce.entity.cart.Cart;
+import com.newwave.bu3internecommerce.entity.cart.CartItem;
 import com.newwave.bu3internecommerce.repository.CartRepository;
+import com.newwave.bu3internecommerce.repository.LaptopRepository;
 import com.newwave.bu3internecommerce.repository.OrdersRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,17 +21,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrdersService {
 
     private final OrdersRepository ordersRepository;
 
     private final CartRepository cartRepository;
 
-    public OrdersService(OrdersRepository ordersRepository,
-                         CartRepository cartRepository) {
-        this.ordersRepository = ordersRepository;
-        this.cartRepository = cartRepository;
-    }
+    private final LaptopRepository laptopRepository;
 
     /**
      * Get Orders by ordersId and update orderStatus
@@ -42,7 +42,7 @@ public class OrdersService {
                 .orElseThrow(() -> new AppException(ErrorCode.ORDERS_NOT_EXISTED));
         orders.setOrderStatus(newOrderStatus);
         ordersRepository.save(orders);
-        return new OrdersDTO(orders);
+        return  OrdersDTO.fromEntity(orders);
     }
 
     /**
@@ -67,9 +67,15 @@ public class OrdersService {
         orders.setCart(cart);
 
         // Convert cart items to order items
-        List<OrderItem> orderItems = convertCartItemsToOrderItems(cartItems);
-        for (OrderItem orderItem: orderItems) {
+        List<OrdersItem> orderItems = convertCartItemsToOrderItems(cartItems);
+        for (OrdersItem orderItem: orderItems) {
             orderItem.setOrders(orders);
+            Laptop laptop = orderItem.getLaptop();
+
+            // Change laptop quantity in inventory
+            int stock = laptop.getStock() - orderItem.getQuantity();
+            laptop.setStock(stock);
+            laptopRepository.save(laptop);
         }
         orders.setOrderItems(orderItems);
         cart.getCartItems().clear();
@@ -77,7 +83,7 @@ public class OrdersService {
         // Save everything be changed
         cartRepository.save(cart);
         ordersRepository.save(orders);
-        return new OrdersDTO(orders);
+        return  OrdersDTO.fromEntity(orders);
     }
 
     /**
@@ -87,10 +93,10 @@ public class OrdersService {
      * @return List<OrderItem> containing Order Items
      */
     @Transactional
-    public List<OrderItem> convertCartItemsToOrderItems(List<CartItem> cartItems) {
+    public List<OrdersItem> convertCartItemsToOrderItems(List<CartItem> cartItems) {
         return cartItems.stream()
                 .map(cartItem -> {
-                    OrderItem orderItem = new OrderItem();
+                    OrdersItem orderItem = new OrdersItem();
                     orderItem.setLaptop(cartItem.getLaptop());
                     orderItem.setQuantity(cartItem.getQuantity());
                     return orderItem;

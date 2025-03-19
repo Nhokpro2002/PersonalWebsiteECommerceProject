@@ -1,4 +1,5 @@
-package com.newwave.bu3internecommerce.model;
+/*
+package com.newwave.bu3internecommerce.entity;
 
 
 import jakarta.persistence.*;
@@ -26,3 +27,4 @@ public class Customer {
     private String password;
 
 }
+*/

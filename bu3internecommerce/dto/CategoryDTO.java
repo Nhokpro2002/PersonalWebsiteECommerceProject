@@ -1,4 +1,4 @@
-package com.newwave.bu3internecommerce.dto.response;
+package com.newwave.bu3internecommerce.dto;
 
 import lombok.Data;
 
