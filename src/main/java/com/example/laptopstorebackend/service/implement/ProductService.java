@@ -1,13 +1,16 @@
 package com.example.laptopstorebackend.service.implement;
 
+import com.example.laptopstorebackend.dto.ProductDTO;
 import com.example.laptopstorebackend.entity.Product;
+import com.example.laptopstorebackend.exception.AppException;
+import com.example.laptopstorebackend.mapper.ProductConverter;
 import com.example.laptopstorebackend.repository.ProductRepository;
 import com.example.laptopstorebackend.service.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -15,36 +18,33 @@ public class ProductService implements IProductService {
 
     private final ProductRepository productRepository;
 
+
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(ProductConverter::covertFromEntity)
+                .toList();
     }
 
     @Override
-    public Optional<Product> getProductById(Long productId) {
-        return productRepository.findById(productId);
+    public ProductDTO getProductById(Long productId) {
+        Product product = productRepository.findByProductId(productId)
+                .orElseThrow(() -> new AppException(404, "Product not found"));
+        return ProductConverter.covertFromEntity(product);
     }
 
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public ProductDTO saveProduct(Product product) {
+        return null;
     }
 
     @Override
     public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Optional<Product> existingProduct = productRepository.findById(product.getProductId());
-
-        if (existingProduct.isPresent()) {
-            Product updatedProduct = Product
-
-            return productRepository.save(updatedProduct);
-        } else {
-            throw new RuntimeException("Product not found with ID: " + product.getId());
-        }
+    public ProductDTO updateProduct(Product product) {
+        return null;
     }
 }
