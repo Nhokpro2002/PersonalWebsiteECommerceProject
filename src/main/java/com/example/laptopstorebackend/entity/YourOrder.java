@@ -31,7 +31,4 @@ public class YourOrder {
 
     private LocalDate createAt;
 
-    @OneToMany(mappedBy = "yourOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<YourOrderItem> yourOrderItemsItems;
-
 }

@@ -1,12 +1,18 @@
 package com.example.laptopstorebackend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "shopping_cart")
 public class ShoppingCart {
 
@@ -16,9 +22,6 @@ public class ShoppingCart {
 
     @Column(name = "customer_Id", nullable = false)
     private Long customerId;
-
-    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ShoppingCartItem> shoppingCartItems;
 
     @Column(name = "shoppingCart_totalPrice", nullable = false)
     private BigDecimal totalPrice;
