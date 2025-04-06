@@ -2,6 +2,7 @@ package com.example.laptopstorebackend.service.implement;
 
 import com.example.laptopstorebackend.dto.ProductDTO;
 import com.example.laptopstorebackend.entity.Product;
+import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.mapper.ProductConverter;
 import com.example.laptopstorebackend.repository.ProductRepository;
 import com.example.laptopstorebackend.service.interfaces.IProductService;
@@ -29,9 +30,13 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductDTO findById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
-        return ProductConverter.convertFromEntity(product);
+        Optional<Product> optionalExistingProduct = productRepository.findById(id);
+
+        if (optionalExistingProduct.isPresent()) {
+            Product product = optionalExistingProduct.get();
+            return ProductConverter.convertFromEntity(product);
+        }
+        throw new ResourceNotFoundException("Product not found with productId: " + id);
     }
 
     @Override
@@ -41,11 +46,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        if (!productRepository.existsById(id)) {
-            throw new RuntimeException("Product not found with id: " + id);
-        }
-        productRepository.deleteById(id);
+    public ProductDTO deleteById(Long id) {
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found by productId: " + id));
+        existingProduct.setStock(0);
+        return ProductConverter.convertFromEntity(existingProduct);
     }
 
     @Override
@@ -53,7 +58,7 @@ public class ProductServiceImpl implements IProductService {
         Optional<Product> optionalExistingProduct = productRepository.findById(id);
 
         if (optionalExistingProduct.isEmpty()) {
-            throw new RuntimeException("Product not found");
+            throw new ResourceNotFoundException("Product not found with productId " + id);
         }
 
         Product existingProduct = optionalExistingProduct.get();

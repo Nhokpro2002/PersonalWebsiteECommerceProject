@@ -4,6 +4,8 @@ import com.example.laptopstorebackend.dto.ProductDTO;
 import com.example.laptopstorebackend.dto.ShoppingCartItemDTO;
 import com.example.laptopstorebackend.entity.Product;
 import com.example.laptopstorebackend.entity.ShoppingCartItem;
+import com.example.laptopstorebackend.exception.ArgumentException;
+import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.mapper.ProductConverter;
 import com.example.laptopstorebackend.repository.ProductRepository;
 import com.example.laptopstorebackend.repository.ShoppingCartItemRepository;
@@ -64,10 +66,9 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
                 return buildShoppingCartItemDTO(productDTO, quantity);
 
             } else {
-                throw new IllegalArgumentException("You can only buy a maximum of "
-                        + findById(item.getProductId()).getStock()
-                        + " products");
-            }
+                throw new ArgumentException("You can only buy a maximum of products: "
+                        + findById(item.getProductId()).getStock().toString());
+                }
         } else {
             ShoppingCartItem item = ShoppingCartItem.builder()
                     .shoppingCartId(shoppingCartId)
@@ -107,7 +108,7 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
 
             return buildShoppingCartItemDTO(productDTO, quantity);
         }
-        throw new RuntimeException("Product not exist in Shopping Cart");
+        throw new ResourceNotFoundException("Product not found in Shopping Cart " + productId);
     }
 
     /**
@@ -122,16 +123,20 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
 
         if (shoppingCartItem.isPresent()) {
             ShoppingCartItem item = shoppingCartItem.get();
+            if (item.getProductQuantity() + 1 <= findById(productId).getStock()) {
                 item.setProductQuantity(item.getProductQuantity() + 1);
                 shoppingCartItemRepository.save(item);
-
+            } else {
+                throw new ArgumentException("You can only buy a maximum of products: "
+                        + findById(productId).getStock().toString());
+            }
             ProductDTO productDTO = ProductConverter.convertFromEntity(findById(item.getProductId()));
             Integer quantity = item.getProductQuantity();
 
             return buildShoppingCartItemDTO(productDTO, quantity);
         }
 
-        throw new RuntimeException("Product not exist in Shopping Cart");
+        throw new ResourceNotFoundException("Product not exist in Shopping Cart");
     }
 
     /**
@@ -148,7 +153,6 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
         Integer quantity = item.getProductQuantity();
 
         return buildShoppingCartItemDTO(productDTO, quantity);
-
     }
 
     /**
@@ -157,7 +161,8 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
      * @return Product entity if found, otherwise throws an exception.
      */
     private Product findById(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found in inventory: " + productId));
     }
 
     /**

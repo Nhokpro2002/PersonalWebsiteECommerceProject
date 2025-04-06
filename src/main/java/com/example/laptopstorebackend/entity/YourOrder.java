@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Entity
@@ -22,6 +21,18 @@ public class YourOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yourOrderId;
+
+    @Column(name = "customer_name", nullable = false)
+    private String customerName;
+
+    @Column(name = "customer_address", nullable = false)
+    private String customerAddress;
+
+    @Column(name = "customer_id", nullable = false)
+    private String customerId;
+
+    @Column(name = "Agent_name", nullable = false)
+    private String saleAgent;
 
     @Enumerated(EnumType.STRING)
     private YourOrderStatus yourOrderStatus;
