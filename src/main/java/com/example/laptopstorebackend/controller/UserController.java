@@ -1,7 +1,8 @@
+/*
 package com.example.laptopstorebackend.controller;
 
 import com.example.laptopstorebackend.entity.User;
-import com.example.laptopstorebackend.service.UserServiceImpl;
+import com.example.laptopstorebackend.service.implement.UserServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,3 +15,4 @@ public class UserController extends GenericController<User, Long>{
     }
 
 }
+*/

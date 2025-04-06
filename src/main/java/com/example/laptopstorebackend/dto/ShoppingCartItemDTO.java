@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShoppingCartDTO {
-    private List<ShoppingCartItemDTO> items;
-    private BigDecimal totalPrice;
+public class ShoppingCartItemDTO {
+
+    private ProductDTO productDTO;
+    private Integer productQuantity;
+
 }

@@ -1,9 +1,11 @@
 package com.example.laptopstorebackend.constant;
 
 public enum Category {
-    LAPTOP,
     GAMING_MOUSE,
+    KEYBOARD,
+    LAPTOP,
     SCREEN,
     SSD,
-    KEYBOARD
+    LAPTOP_GAMING,
+    LAPTOP_OFFICE
 }

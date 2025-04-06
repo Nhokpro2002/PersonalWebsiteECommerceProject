@@ -5,13 +5,13 @@ import com.example.laptopstorebackend.entity.Product;
 
 public class ProductConverter {
 
-    public static ProductDTO covertFromEntity(Product product) {
+    public static ProductDTO convertFromEntity(Product product) {
         return ProductDTO.builder()
                 .productName(product.getProductName())
                 .description(product.getDescription())
                 .sellingPrice(product.getSellingPrice())
-                .imageURL(product.getImageURL())
+                .imageUrl(product.getImageURL())
+                .category(product.getCategory())
                 .build();
     }
-
 }

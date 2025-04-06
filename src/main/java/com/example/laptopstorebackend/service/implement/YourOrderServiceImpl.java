@@ -1,4 +1,5 @@
-package com.example.laptopstorebackend.service;
+/*
+package com.example.laptopstorebackend.service.implement;
 
 import com.example.laptopstorebackend.entity.YourOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,3 +12,4 @@ public class YourOrderServiceImpl extends GenericServiceImpl<YourOrder, Long> {
         super(repository);
     }
 }
+*/

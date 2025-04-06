@@ -4,5 +4,5 @@ import com.example.laptopstorebackend.entity.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends GenericRepository<User, Long> {
+public interface UserRepository extends org.springframework.data.jpa.repository.JpaRepository<User, Long> {
 }

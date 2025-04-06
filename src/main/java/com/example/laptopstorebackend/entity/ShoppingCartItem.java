@@ -19,7 +19,7 @@ public class ShoppingCartItem {
     private Long id;
 
     @Column(name = "cart_id", nullable = false)
-    private Long shoppingCart;
+    private Long shoppingCartId;
 
     @Column(name = "product_id", nullable = false)
     private Long productId;

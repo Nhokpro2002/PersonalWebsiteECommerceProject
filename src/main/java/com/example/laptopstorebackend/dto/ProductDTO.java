@@ -1,6 +1,8 @@
 package com.example.laptopstorebackend.dto;
 
 import com.example.laptopstorebackend.constant.Category;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +18,12 @@ public class ProductDTO {
 
     private String productName;
     private String description;
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private BigDecimal sellingPrice;
+
+    @JsonSerialize(using = ToStringSerializer.class)
     private Category category;
-    private String imageURL; // FIXME: product can many imageURL
+    private String imageUrl; // FIXME: product can many imageURL
 
 }
