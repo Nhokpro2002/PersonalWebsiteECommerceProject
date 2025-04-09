@@ -13,5 +13,7 @@ public interface IProductService {
     ProductDTO findById(Long id);
     ProductDTO save(Product product);
     ProductDTO deleteById(Long id);
-    ProductDTO update(BigDecimal sellingPrice, Long id);
+    ProductDTO updateSellingPrice(BigDecimal sellingPrice, Long id);
+
+    void updateStock(Integer newStock, String productName);
 }

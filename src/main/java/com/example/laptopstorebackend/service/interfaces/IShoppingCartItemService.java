@@ -43,4 +43,6 @@ public interface IShoppingCartItemService {
      * @return Deleted shopping cart item.
      */
     ShoppingCartItemDTO deleteItem(Long shoppingCartId, Long productId);
+
+    void deleteAllItem(Long shoppingCartId);
 }

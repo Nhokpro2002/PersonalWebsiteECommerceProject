@@ -6,7 +6,6 @@ import com.example.laptopstorebackend.entity.Product;
 import com.example.laptopstorebackend.entity.ShoppingCartItem;
 import com.example.laptopstorebackend.exception.ArgumentException;
 import com.example.laptopstorebackend.exception.ResourceNotFoundException;
-import com.example.laptopstorebackend.mapper.ProductConverter;
 import com.example.laptopstorebackend.repository.ProductRepository;
 import com.example.laptopstorebackend.repository.ShoppingCartItemRepository;
 import com.example.laptopstorebackend.service.interfaces.IShoppingCartItemService;
@@ -61,7 +60,7 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
             if (item.getProductQuantity() + quantity <= findById(item.getProductId()).getStock()) {
                 item.setProductQuantity(item.getProductQuantity() + quantity);
                 shoppingCartItemRepository.save(item);
-                ProductDTO productDTO = ProductConverter.convertFromEntity(findById(item.getProductId()));
+                ProductDTO productDTO = productServiceImpl.convertFromEntity(findById(item.getProductId()));
 
                 return buildShoppingCartItemDTO(productDTO, quantity);
 
@@ -76,7 +75,7 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
                     .productQuantity(quantity)
                     .build();
             shoppingCartItemRepository.save(item);
-            ProductDTO productDTO = ProductConverter.convertFromEntity(findById(item.getProductId()));
+            ProductDTO productDTO = productServiceImpl.convertFromEntity(findById(item.getProductId()));
 
             return buildShoppingCartItemDTO(productDTO, quantity);
         }
@@ -103,7 +102,7 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
                 shoppingCartItemRepository.delete(item);
             }
 
-            ProductDTO productDTO = ProductConverter.convertFromEntity(findById(item.getProductId()));
+            ProductDTO productDTO = productServiceImpl.convertFromEntity(findById(item.getProductId()));
             Integer quantity = item.getProductQuantity();
 
             return buildShoppingCartItemDTO(productDTO, quantity);
@@ -130,7 +129,7 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
                 throw new ArgumentException("You can only buy a maximum of products: "
                         + findById(productId).getStock().toString());
             }
-            ProductDTO productDTO = ProductConverter.convertFromEntity(findById(item.getProductId()));
+            ProductDTO productDTO = productServiceImpl.convertFromEntity(findById(item.getProductId()));
             Integer quantity = item.getProductQuantity();
 
             return buildShoppingCartItemDTO(productDTO, quantity);
@@ -149,10 +148,19 @@ public class ShoppingCartItemServiceImpl implements IShoppingCartItemService {
         ShoppingCartItem item = shoppingCartItemRepository
                 .deleteByShoppingCartIdAndProductId(shoppingCartId, productId);
 
-        ProductDTO productDTO = ProductConverter.convertFromEntity(findById(item.getProductId()));
+        ProductDTO productDTO = productServiceImpl.convertFromEntity(findById(item.getProductId()));
         Integer quantity = item.getProductQuantity();
 
         return buildShoppingCartItemDTO(productDTO, quantity);
+    }
+
+    /**
+     * Delete all item in Shopping Cart
+     * @param shoppingCartId
+     */
+    @Override
+    public void deleteAllItem(Long shoppingCartId) {
+        shoppingCartItemRepository.deleteByShoppingCartId(shoppingCartId);
     }
 
     /**

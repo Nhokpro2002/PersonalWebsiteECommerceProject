@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IYourOrderItemService {
     List<YourOrderItemDTO> findAll(Long yourOrderId);
+    List<YourOrderItemDTO> createOrderItem(Long shoppingCartId);
 }

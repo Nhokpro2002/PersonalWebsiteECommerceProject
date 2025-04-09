@@ -57,7 +57,7 @@ public class ProductController {
 
     @PatchMapping("/{id}")
     public ApiResponse<ProductDTO> update(@RequestBody BigDecimal sellingPrice, @PathVariable Long id) {
-        ProductDTO productDTO = productServiceImpl.update(sellingPrice, id);
+        ProductDTO productDTO = productServiceImpl.updateSellingPrice(sellingPrice, id);
         return ApiResponse.<ProductDTO>builder()
                 .code(200)
                 .message("Update product successfully")

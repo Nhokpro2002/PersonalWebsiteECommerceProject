@@ -1,5 +1,6 @@
 package com.example.laptopstorebackend.service.interfaces;
 
+import com.example.laptopstorebackend.constant.YourOrderStatus;
 import com.example.laptopstorebackend.dto.YourOrderDTO;
 
 public interface IYourOrderService {
@@ -10,4 +11,8 @@ public interface IYourOrderService {
      * @return YourOrderDTO: list of product and totalPrice
      */
     YourOrderDTO createYourOrder(Long shoppingCartId);
+
+    YourOrderDTO changeYourOrderStatus(Long yourOrderId, YourOrderStatus newStatus);
+
+    YourOrderDTO getYourOrder(Long yourOrderId);
 }

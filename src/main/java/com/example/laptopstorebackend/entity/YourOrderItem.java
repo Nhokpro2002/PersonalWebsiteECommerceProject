@@ -1,8 +1,10 @@
 package com.example.laptopstorebackend.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "order_item")
 public class YourOrderItem {
 

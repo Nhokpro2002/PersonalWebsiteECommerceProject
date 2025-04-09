@@ -1,3 +1,4 @@
+/*
 package com.example.laptopstorebackend.mapper;
 
 import com.example.laptopstorebackend.dto.ProductDTO;
@@ -15,3 +16,4 @@ public class ProductConverter {
                 .build();
     }
 }
+*/

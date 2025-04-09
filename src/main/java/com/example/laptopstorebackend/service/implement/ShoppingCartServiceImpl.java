@@ -58,6 +58,14 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
     }
 
     /**
+     *
+     * @param shoppingCartId
+     */
+    public void deleteAllItem(Long shoppingCartId) {
+        shoppingCartItemServiceImpl.deleteAllItem(shoppingCartId);
+    }
+
+    /**
      * Helper method to build ShoppingCartDTO from shoppingCartId.
      */
     private ShoppingCartDTO buildShoppingCartDTO(Long shoppingCartId) {

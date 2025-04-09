@@ -24,6 +24,9 @@ public class ProductDTO {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Category category;
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Integer stock;
     private String imageUrl; // FIXME: product can many imageURL
 
 }
