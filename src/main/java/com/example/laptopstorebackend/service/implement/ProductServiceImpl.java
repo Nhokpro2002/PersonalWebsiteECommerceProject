@@ -106,6 +106,7 @@ public class ProductServiceImpl implements IProductService {
      */
     public ProductDTO convertFromEntity(Product product) {
         return ProductDTO.builder()
+                .productId(product.getProductId())
                 .productName(product.getProductName())
                 .description(product.getDescription())
                 .sellingPrice(product.getSellingPrice())

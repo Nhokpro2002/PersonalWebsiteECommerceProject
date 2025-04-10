@@ -16,11 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class YourOrderDTO {
-    private List<YourOrderItemDTO> items;
-
+    private Long yourOrderId;
     private String customerName;
     private String customerAddress;
     private String agentName;
+    private List<YourOrderItemDTO> items;
 
     @JsonSerialize(using = ToStringSerializer.class)
     private BigDecimal totalPrice;

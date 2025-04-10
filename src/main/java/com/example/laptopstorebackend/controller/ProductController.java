@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-//@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
@@ -27,8 +26,8 @@ public class ProductController {
                 .data(productDTOList).build();
     }
 
-    @GetMapping("/{id}")
-    public ApiResponse<ProductDTO> findById(@PathVariable Long id) {
+    @GetMapping("/productId")
+    public ApiResponse<ProductDTO> findById(@RequestParam Long id) {
         ProductDTO productDTO = productServiceImpl.findById(id);
         return ApiResponse.<ProductDTO>builder()
                 .code(200)
@@ -46,8 +45,8 @@ public class ProductController {
                 .data(productDTO).build();
     }
 
-    @DeleteMapping("/{id}")
-    public ApiResponse<String> delete(@PathVariable Long id) {
+    @DeleteMapping()
+    public ApiResponse<String> delete(@RequestParam Long id) {
         productServiceImpl.deleteById(id);
         return ApiResponse.<String>builder()
                 .code(200)
@@ -55,8 +54,8 @@ public class ProductController {
                 .build();
     }
 
-    @PatchMapping("/{id}")
-    public ApiResponse<ProductDTO> update(@RequestBody BigDecimal sellingPrice, @PathVariable Long id) {
+    @PatchMapping()
+    public ApiResponse<ProductDTO> update(@RequestParam BigDecimal sellingPrice, @RequestParam Long id) {
         ProductDTO productDTO = productServiceImpl.updateSellingPrice(sellingPrice, id);
         return ApiResponse.<ProductDTO>builder()
                 .code(200)

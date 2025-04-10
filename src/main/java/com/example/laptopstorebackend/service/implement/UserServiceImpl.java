@@ -1,7 +1,9 @@
 
 package com.example.laptopstorebackend.service.implement;
 
+import com.example.laptopstorebackend.constant.UserRole;
 import com.example.laptopstorebackend.dto.UserDTO;
+import com.example.laptopstorebackend.dto.request.UserRegisterRequest;
 import com.example.laptopstorebackend.entity.User;
 import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.repository.UserRepository;
@@ -17,6 +19,11 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
 
+    /**
+     *
+     * @param userId
+     * @return
+     */
     public UserDTO findById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
@@ -25,8 +32,28 @@ public class UserServiceImpl implements IUserService {
         throw new ResourceNotFoundException("User not found");
     }
 
+    /**
+     *
+     * @param userRegisterRequest
+     * @return
+     */
+    public UserDTO register(UserRegisterRequest userRegisterRequest) {
+        User user = User.builder()
+                .userName(userRegisterRequest.getUserName())
+                .userPassword(userRegisterRequest.getUserPassword())
+                .email(userRegisterRequest.getEmail())
+                .address(userRegisterRequest.getAddress())
+                .firstName(userRegisterRequest.getFirstName())
+                .lastName(userRegisterRequest.getLastName())
+                .userRole(UserRole.CUSTOMER)
+                .build();
+        userRepository.save(user);
+        return convertFromEntity(user);
+    }
+
     public UserDTO convertFromEntity(User user) {
         return UserDTO.builder()
+                .userId(user.getId())
                 .address(user.getAddress())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())

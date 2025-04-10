@@ -23,7 +23,7 @@ public class ShoppingCart {
     @Column(name = "customer_Id", nullable = false)
     private Long customerId;
 
-    @Column(name = "shoppingCart_totalPrice", nullable = false)
+    @Column(name = "shoppingCart_totalPrice")
     private BigDecimal totalPrice;
 
 }

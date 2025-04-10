@@ -21,26 +21,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_email", nullable = false, unique = true)
+    @Column(name = "user_email", unique = true)
     private String email;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "user_password")
     private String userPassword;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_Role", nullable = false)
+    @Column(name = "user_Role")
     private UserRole userRole;
 
     private LocalDateTime createdAt;

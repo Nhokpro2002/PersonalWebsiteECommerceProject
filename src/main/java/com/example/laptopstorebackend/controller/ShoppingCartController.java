@@ -3,6 +3,7 @@ package com.example.laptopstorebackend.controller;
 
 import com.example.laptopstorebackend.dto.ShoppingCartDTO;
 import com.example.laptopstorebackend.dto.response.ApiResponse;
+import com.example.laptopstorebackend.entity.ShoppingCart;
 import com.example.laptopstorebackend.service.implement.ShoppingCartServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,15 @@ public class ShoppingCartController {
 
     private final ShoppingCartServiceImpl shoppingCartServiceImpl;
 
+    @PostMapping
+    public ApiResponse<ShoppingCart> createShoppingCart(@RequestParam Long userId) {
+        return ApiResponse.<ShoppingCart>builder()
+                .code(200)
+                .message("Create Shopping Cart successfully")
+                .data(shoppingCartServiceImpl.createShoppingCart(userId))
+                .build();
+    }
+
     @GetMapping()
     public ApiResponse<ShoppingCartDTO> getAllItem(@RequestParam Long shoppingCartId) {
         return ApiResponse.<ShoppingCartDTO>builder()
@@ -23,7 +33,7 @@ public class ShoppingCartController {
                 .build();
     }
 
-    @PostMapping()
+    @PostMapping("/items")
     public ApiResponse<ShoppingCartDTO> createShoppingCartItem(@RequestParam Long shoppingCartId,
                                                                @RequestParam Long productId,
                                                                @RequestParam Integer quantity) {

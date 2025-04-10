@@ -22,22 +22,22 @@ public class YourOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yourOrderId;
 
-    @Column(name = "customer_name", nullable = false)
+    @Column(name = "customer_name")
     private String customerName;
 
-    @Column(name = "customer_address", nullable = false)
+    @Column(name = "customer_address")
     private String customerAddress;
 
-    @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    @Column(name = "customer_id")
+    private Long customerId;
 
-    @Column(name = "Agent_name", nullable = false)
+    @Column(name = "Agent_name")
     private String saleAgent;
 
     @Enumerated(EnumType.STRING)
     private YourOrderStatus yourOrderStatus;
 
-    @Column(name = "yourOrder_totalPrice", nullable = false)
+    @Column(name = "yourOrder_totalPrice")
     private BigDecimal totalPrice;
 
     private LocalDate createAt;

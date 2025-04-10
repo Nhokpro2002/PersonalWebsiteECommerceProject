@@ -2,7 +2,6 @@ package com.example.laptopstorebackend.service.implement;
 
 import com.example.laptopstorebackend.dto.ShoppingCartItemDTO;
 import com.example.laptopstorebackend.dto.YourOrderItemDTO;
-import com.example.laptopstorebackend.entity.Product;
 import com.example.laptopstorebackend.entity.YourOrderItem;
 import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.repository.YourOrderItemRepository;
@@ -38,46 +37,37 @@ public class YourOrderItemServiceImpl implements IYourOrderItemService {
      */
     @Override
     @Transactional
-    public List<YourOrderItemDTO> createOrderItem(Long shoppingCartId) {
+    public List<YourOrderItemDTO> createOrderItem(Long shoppingCartId, Long yourOrderId) {
         List<ShoppingCartItemDTO> items = shoppingCartItemServiceImpl.findAll(shoppingCartId);
-        boolean isCreatable = true;
         for (ShoppingCartItemDTO itemDTO: items) {
             if (itemDTO.getProductQuantity() > itemDTO.getProductDTO().getStock()) {
-                isCreatable = false;
                 throw new ResourceNotFoundException("You just can buy max of "
                         + itemDTO.getProductDTO().getStock()
                         + " "
                         + itemDTO.getProductDTO().getProductName());
             }
-
         }
 
-        if (isCreatable) {
-            for (ShoppingCartItemDTO itemDTO: items) {
-                Integer newStock = itemDTO.getProductDTO().getStock() - itemDTO.getProductQuantity();
-                productServiceImpl.updateStock(newStock, itemDTO.getProductDTO().getProductName());
-            }
-            shoppingCartItemServiceImpl.deleteAllItem(shoppingCartId);
+        for (ShoppingCartItemDTO itemDTO: items) {
+            YourOrderItem yourOrderItem = YourOrderItem.builder()
+                    .orderId(yourOrderId)
+                    .productId(itemDTO.getProductDTO().getProductId())
+                    .quantity(itemDTO.getProductQuantity())
+                    .build();
+            yourOrderItemRepository.save(yourOrderItem);
+
+            Integer newStock = itemDTO.getProductDTO().getStock() - itemDTO.getProductQuantity();
+            productServiceImpl.updateStock(newStock, itemDTO.getProductDTO().getProductName());
         }
+        shoppingCartItemServiceImpl.deleteAllItem(shoppingCartId);
+
         return items.stream().map(this::buildYourOrderItemDTO).toList();
     }
 
     /**
      * Helper function to build YourOrderItemDTO
-     * @param yourOrderItem The item in order
+     * @param shoppingCartItemDTO The item in order
      * @return YourOrderItemDTO consit of: ProductDTO and quantity
-     */
-    private YourOrderItemDTO buildYourOrderItemDTO(YourOrderItem yourOrderItem) {
-        return YourOrderItemDTO.builder()
-                .productDTO(productServiceImpl.findById(yourOrderItem.getProductId()))
-                .productQuantity(yourOrderItem.getQuantity())
-                .build();
-    }
-
-    /**
-     * Helper function to build Shopping Cart Item
-     * @param shoppingCartItemDTO
-     * @return
      */
     private YourOrderItemDTO buildYourOrderItemDTO(ShoppingCartItemDTO shoppingCartItemDTO) {
         return YourOrderItemDTO.builder()
@@ -86,7 +76,16 @@ public class YourOrderItemServiceImpl implements IYourOrderItemService {
                 .build();
     }
 
-    /*public void deleteAllItem(Long shoppingCartId) {
-        shoppingCartItemServiceImpl.deleteAllItem(shoppingCartId);
-    }*/
+    /**
+     *
+     * @param yourOrderItem
+     * @return
+     */
+    private YourOrderItemDTO buildYourOrderItemDTO(YourOrderItem yourOrderItem) {
+        return YourOrderItemDTO.builder()
+                .productDTO(productServiceImpl.findById(yourOrderItem.getProductId()))
+                .productQuantity(yourOrderItem.getQuantity())
+                .build();
+    }
+
 }

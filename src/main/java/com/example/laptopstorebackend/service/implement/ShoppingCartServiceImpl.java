@@ -3,6 +3,9 @@ package com.example.laptopstorebackend.service.implement;
 
 import com.example.laptopstorebackend.dto.ShoppingCartDTO;
 import com.example.laptopstorebackend.dto.ShoppingCartItemDTO;
+import com.example.laptopstorebackend.entity.ShoppingCart;
+import com.example.laptopstorebackend.exception.ResourceNotFoundException;
+import com.example.laptopstorebackend.repository.ShoppingCartRepository;
 import com.example.laptopstorebackend.service.interfaces.IShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,21 @@ import java.util.List;
 public class ShoppingCartServiceImpl implements IShoppingCartService {
 
     private final ShoppingCartItemServiceImpl shoppingCartItemServiceImpl;
+    private final ShoppingCartRepository shoppingCartRepository;
 
+    /**
+     *
+     * @return
+     */
+    public ShoppingCart createShoppingCart(Long userId) {
+        ShoppingCart shoppingCart = ShoppingCart.builder()
+                .customerId(userId)
+                .totalPrice(null)
+                .build();
+        shoppingCartRepository.save(shoppingCart);
+        return shoppingCart;
+
+    }
     @Override
     public ShoppingCartDTO getAllItem(Long shoppingCartId) {
         return buildShoppingCartDTO(shoppingCartId);
@@ -58,14 +75,6 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
     }
 
     /**
-     *
-     * @param shoppingCartId
-     */
-    public void deleteAllItem(Long shoppingCartId) {
-        shoppingCartItemServiceImpl.deleteAllItem(shoppingCartId);
-    }
-
-    /**
      * Helper method to build ShoppingCartDTO from shoppingCartId.
      */
     private ShoppingCartDTO buildShoppingCartDTO(Long shoppingCartId) {
@@ -77,6 +86,10 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
                         .multiply(BigDecimal.valueOf(item.getProductQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartId)
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping Cart not found"));
+        shoppingCart.setTotalPrice(totalPrice);
+        shoppingCartRepository.save(shoppingCart);
         return ShoppingCartDTO.builder()
                 .items(itemDTOS)
                 .totalPrice(totalPrice)
