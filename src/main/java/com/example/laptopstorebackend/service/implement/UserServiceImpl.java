@@ -3,12 +3,15 @@ package com.example.laptopstorebackend.service.implement;
 
 import com.example.laptopstorebackend.constant.UserRole;
 import com.example.laptopstorebackend.dto.UserDTO;
+import com.example.laptopstorebackend.dto.request.UserLoginRequest;
 import com.example.laptopstorebackend.dto.request.UserRegisterRequest;
 import com.example.laptopstorebackend.entity.User;
 import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.repository.UserRepository;
 import com.example.laptopstorebackend.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +21,7 @@ import java.util.Optional;
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      *
@@ -40,7 +44,7 @@ public class UserServiceImpl implements IUserService {
     public UserDTO register(UserRegisterRequest userRegisterRequest) {
         User user = User.builder()
                 .userName(userRegisterRequest.getUserName())
-                .userPassword(userRegisterRequest.getUserPassword())
+                .userPassword(passwordEncoder.encode(userRegisterRequest.getUserPassword()))
                 .email(userRegisterRequest.getEmail())
                 .address(userRegisterRequest.getAddress())
                 .firstName(userRegisterRequest.getFirstName())
@@ -49,6 +53,14 @@ public class UserServiceImpl implements IUserService {
                 .build();
         userRepository.save(user);
         return convertFromEntity(user);
+    }
+
+    /**
+     *
+     * @param userLoginRequest
+     */
+    public Jwt login(UserLoginRequest userLoginRequest) {
+
     }
 
     public UserDTO convertFromEntity(User user) {
