@@ -10,8 +10,12 @@ import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.repository.UserRepository;
 import com.example.laptopstorebackend.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
+//import org.springframework.security.oauth2.jwt.Jwt;
+import com.example.laptopstorebackend.dto.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,6 +26,8 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtServiceImpl jwtServiceImpl;
 
     /**
      *
@@ -57,9 +63,14 @@ public class UserServiceImpl implements IUserService {
 
     /**
      *
-     * @param userLoginRequest
+     * //@param userLoginRequest
      */
     public Jwt login(UserLoginRequest userLoginRequest) {
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                userLoginRequest.getUserName(),
+                userLoginRequest.getUserPassword()));
+        String token = jwtServiceImpl.generateToken(auth.getName());
+        return new Jwt(token);
 
     }
 
