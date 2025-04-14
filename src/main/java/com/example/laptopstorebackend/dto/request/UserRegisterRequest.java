@@ -1,8 +1,11 @@
 package com.example.laptopstorebackend.dto.request;
 
 import com.example.laptopstorebackend.constant.UserRole;
+import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class UserRegisterRequest {
@@ -34,5 +37,6 @@ public class UserRegisterRequest {
 
     @NotNull(message = "User role is required")
     private UserRole userRole = UserRole.CUSTOMER;
+
 
 }

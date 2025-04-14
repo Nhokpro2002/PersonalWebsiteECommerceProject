@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,7 +34,7 @@ public class User {
     @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", unique = true)
     private String userName;
 
     @Column(name = "user_password")
@@ -43,6 +44,10 @@ public class User {
     @Column(name = "user_Role")
     private UserRole userRole;
 
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDate.now();
+    }
 
 }
