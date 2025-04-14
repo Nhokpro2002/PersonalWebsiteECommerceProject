@@ -36,7 +36,7 @@ public class UserRegisterRequest {
     private String userPassword;
 
     @NotNull(message = "User role is required")
-    private UserRole userRole = UserRole.CUSTOMER;
+    private UserRole userRole;
 
 
 }

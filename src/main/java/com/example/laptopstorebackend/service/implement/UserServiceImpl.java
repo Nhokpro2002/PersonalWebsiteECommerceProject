@@ -13,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.oauth2.jwt.Jwt;
 import com.example.laptopstorebackend.dto.Jwt;
 import org.springframework.stereotype.Service;
 
@@ -70,10 +70,15 @@ public class UserServiceImpl implements IUserService {
                 userLoginRequest.getUserName(),
                 userLoginRequest.getUserPassword()));
         String token = jwtServiceImpl.generateToken(auth.getName());
+        System.out.println(token);
         return new Jwt(token);
-
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     public UserDTO convertFromEntity(User user) {
         return UserDTO.builder()
                 .userId(user.getId())
