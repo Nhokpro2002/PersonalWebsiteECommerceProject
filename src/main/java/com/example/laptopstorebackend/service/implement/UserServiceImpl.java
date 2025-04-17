@@ -5,6 +5,7 @@ import com.example.laptopstorebackend.constant.UserRole;
 import com.example.laptopstorebackend.dto.UserDTO;
 import com.example.laptopstorebackend.dto.request.UserLoginRequest;
 import com.example.laptopstorebackend.dto.request.UserRegisterRequest;
+import com.example.laptopstorebackend.entity.CustomUserDetails;
 import com.example.laptopstorebackend.entity.User;
 import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.repository.UserRepository;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.laptopstorebackend.dto.Jwt;
 import org.springframework.stereotype.Service;
@@ -28,6 +28,7 @@ public class UserServiceImpl implements IUserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtServiceImpl jwtServiceImpl;
+    private final ShoppingCartServiceImpl shoppingCartServiceImpl;
 
     /**
      *
@@ -57,7 +58,9 @@ public class UserServiceImpl implements IUserService {
                 .lastName(userRegisterRequest.getLastName())
                 .userRole(UserRole.CUSTOMER)
                 .build();
-        userRepository.save(user);
+        user = userRepository.save(user);
+        // user register successfully => create Shopping Cart for user (userId == shoppingCartId)
+        shoppingCartServiceImpl.createShoppingCart(user.getId());
         return convertFromEntity(user);
     }
 
@@ -69,7 +72,9 @@ public class UserServiceImpl implements IUserService {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userLoginRequest.getUserName(),
                 userLoginRequest.getUserPassword()));
-        String token = jwtServiceImpl.generateToken(auth.getName());
+        CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
+        Long userId = customUserDetails.getUserId();
+        String token = jwtServiceImpl.generateToken(auth.getName(), userId);
         System.out.println(token);
         return new Jwt(token);
     }
