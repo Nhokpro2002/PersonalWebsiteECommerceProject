@@ -46,8 +46,8 @@ public class ProductController {
     }
 
     @DeleteMapping()
-    public ApiResponse<String> delete(@RequestParam Long id) {
-        productServiceImpl.deleteById(id);
+    public ApiResponse<String> delete(@RequestParam Long productId) {
+        productServiceImpl.deleteById(productId);
         return ApiResponse.<String>builder()
                 .code(200)
                 .message("Product be deleted")
@@ -55,8 +55,8 @@ public class ProductController {
     }
 
     @PatchMapping()
-    public ApiResponse<ProductDTO> update(@RequestParam BigDecimal sellingPrice, @RequestParam Long id) {
-        ProductDTO productDTO = productServiceImpl.updateSellingPrice(sellingPrice, id);
+    public ApiResponse<ProductDTO> update(@RequestParam BigDecimal sellingPrice, @RequestParam Long productId) {
+        ProductDTO productDTO = productServiceImpl.updateSellingPrice(sellingPrice, productId);
         return ApiResponse.<ProductDTO>builder()
                 .code(200)
                 .message("Update product successfully")

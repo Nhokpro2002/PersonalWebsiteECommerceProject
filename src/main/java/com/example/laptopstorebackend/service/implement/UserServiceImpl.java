@@ -18,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.laptopstorebackend.dto.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +43,17 @@ public class UserServiceImpl implements IUserService {
             return convertFromEntity(user.get());
         }
         throw new ResourceNotFoundException("User not found");
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<UserDTO> findAllUser() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::convertFromEntity)
+                .collect(Collectors.toList());
     }
 
     /**

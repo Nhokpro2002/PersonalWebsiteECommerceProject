@@ -60,15 +60,13 @@ public class ProductServiceImpl implements IProductService {
 
     /**
      *
-     * @param id
+     * @param productId
      * @return
      */
     @Override
-    public ProductDTO deleteById(Long id) {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found by productId: " + id));
-        existingProduct.setStock(0);
-        return convertFromEntity(existingProduct);
+    public ProductDTO deleteById(Long productId) {
+        productRepository.deleteById(productId);
+        return null;
     }
 
     /**

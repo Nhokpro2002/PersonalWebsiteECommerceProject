@@ -10,6 +10,8 @@ import com.example.laptopstorebackend.dto.Jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -40,5 +42,13 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping
+    public ApiResponse<List<UserDTO>> findAll() {
+        return ApiResponse.<List<UserDTO>>builder()
+                .code(200)
+                .message("Get all users successfully")
+                .data(userServiceImpl.findAllUser())
+                .build();
+    }
 }
 
