@@ -1,14 +1,15 @@
 package com.example.laptopstorebackend.controller;
 
+import com.example.laptopstorebackend.constant.Category;
 import com.example.laptopstorebackend.dto.ProductDTO;
 import com.example.laptopstorebackend.dto.response.ApiResponse;
 import com.example.laptopstorebackend.entity.Product;
 import com.example.laptopstorebackend.service.implement.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.math.BigInteger;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,15 +18,38 @@ public class ProductController {
 
     private final ProductServiceImpl productServiceImpl;
 
+    /**
+     *
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping()
-    public ApiResponse<List<ProductDTO>> findAll() {
-        List<ProductDTO> productDTOList = productServiceImpl.findAll();
-        return ApiResponse.<List<ProductDTO>>builder()
+    public ApiResponse<Page<ProductDTO>> findAll( @RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "9") int size) {
+        Page<ProductDTO> productDTOList = productServiceImpl.findAll(page, size);
+        return ApiResponse.<Page<ProductDTO>>builder()
                 .code(200)
                 .message("List products")
                 .data(productDTOList).build();
     }
 
+    @GetMapping("/category")
+    public ApiResponse<Page<ProductDTO>> findAllByCategory(@RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "9") int size,
+                                                        @RequestParam Category productCategory) {
+        Page<ProductDTO> productDTOList = productServiceImpl.findByCategory(page, size, productCategory);
+        return ApiResponse.<Page<ProductDTO>>builder()
+                .code(200)
+                .message("List products have same Category")
+                .data(productDTOList).build();
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/productId")
     public ApiResponse<ProductDTO> findById(@RequestParam Long id) {
         ProductDTO productDTO = productServiceImpl.findById(id);
@@ -36,6 +60,11 @@ public class ProductController {
 
     }
 
+    /**
+     *
+     * @param product
+     * @return
+     */
     @PostMapping()
     public ApiResponse<ProductDTO> save(@RequestBody Product product) {
         ProductDTO productDTO = productServiceImpl.save(product);
@@ -45,6 +74,11 @@ public class ProductController {
                 .data(productDTO).build();
     }
 
+    /**
+     *
+     * @param productId
+     * @return
+     */
     @DeleteMapping()
     public ApiResponse<String> delete(@RequestParam Long productId) {
         productServiceImpl.deleteById(productId);
@@ -54,8 +88,14 @@ public class ProductController {
                 .build();
     }
 
+    /**
+     *
+     * @param sellingPrice
+     * @param productId
+     * @return
+     */
     @PatchMapping()
-    public ApiResponse<ProductDTO> update(@RequestParam BigDecimal sellingPrice, @RequestParam Long productId) {
+    public ApiResponse<ProductDTO> update(@RequestParam BigInteger sellingPrice, @RequestParam Long productId) {
         ProductDTO productDTO = productServiceImpl.updateSellingPrice(sellingPrice, productId);
         return ApiResponse.<ProductDTO>builder()
                 .code(200)

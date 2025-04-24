@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Builder
 @Data
@@ -21,7 +22,7 @@ public class ProductDTO {
     private String description;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    private BigDecimal sellingPrice;
+    private BigInteger sellingPrice;
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Category category;

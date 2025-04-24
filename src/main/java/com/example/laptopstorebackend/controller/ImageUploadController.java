@@ -1,5 +1,6 @@
 package com.example.laptopstorebackend.controller;
 
+import com.example.laptopstorebackend.dto.response.ApiResponse;
 import io.jsonwebtoken.io.IOException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,13 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 @RestController
-@RequestMapping("/api/images")
+@RequestMapping("/images")
 public class ImageUploadController {
 
     private static final String UPLOAD_DIR = "D:\\LaptopStore\\LaptopStoreBackEnd\\images\\";
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException, java.io.IOException {
+    public ApiResponse<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException, java.io.IOException {
         // Ensure directory exists
         File uploadDir = new File(UPLOAD_DIR);
         if (!uploadDir.exists()) uploadDir.mkdirs();
@@ -26,6 +27,12 @@ public class ImageUploadController {
         String filePath = UPLOAD_DIR + file.getOriginalFilename();
         file.transferTo(new File(filePath));
 
-        return ResponseEntity.ok("Image uploaded successfully: " + filePath);
+        String dbImagePath = "/images/" + file.getOriginalFilename();
+
+        return ApiResponse.<String>builder()
+                .code(200)
+                .message("Upload Image successfully")
+                .data(dbImagePath)
+                .build();
     }
 }

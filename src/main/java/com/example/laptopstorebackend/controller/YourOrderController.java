@@ -17,6 +17,11 @@ public class YourOrderController {
     private final YourOrderServiceImpl yourOrderServiceImpl;
     private final JwtServiceImpl jwtServiceImpl;
 
+    /**
+     *
+     * @param request
+     * @return
+     */
     @PostMapping
     public ApiResponse<YourOrderDTO> createYourOrder(/*@RequestParam Long shoppingCartId*/HttpServletRequest request) {
         String token = extractTokenFromHeader(request);
@@ -29,6 +34,12 @@ public class YourOrderController {
                 .build();
     }
 
+    /**
+     *
+     * @param yourOrderId
+     * @param newStatus
+     * @return
+     */
     @PatchMapping
     public ApiResponse<YourOrderDTO> changeOrderStatus(@RequestParam Long yourOrderId,
                                                        @RequestParam YourOrderStatus newStatus) {
@@ -39,6 +50,11 @@ public class YourOrderController {
                 .build();
     }
 
+    /**
+     *
+     * @param yourOrderId
+     * @return
+     */
     @GetMapping
     public ApiResponse<YourOrderDTO> getOrder(@RequestParam Long yourOrderId) {
         return ApiResponse.<YourOrderDTO>builder()
@@ -48,6 +64,11 @@ public class YourOrderController {
                 .build();
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     */
     private String extractTokenFromHeader(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {

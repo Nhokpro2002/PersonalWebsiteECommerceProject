@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,17 +32,6 @@ public class YourOrderServiceImpl implements IYourOrderService {
      */
     @Override
     public YourOrderDTO createYourOrder(Long shoppingCartId) {
-        /*UserDTO userDTO = userServiceImpl.findById(shoppingCartId);
-        YourOrder yourOrder =  new YourOrder();
-        yourOrder.setSaleAgent("NMT Computer");
-        yourOrder.setCustomerId(shoppingCartId);
-        yourOrder.setCustomerAddress(userDTO.getAddress());
-        yourOrder.setCustomerName(userDTO.getUserName());
-        yourOrder.setYourOrderStatus(YourOrderStatus.PENDING);
-        yourOrder = yourOrderRepository.save(yourOrder);
-        List<YourOrderItemDTO> items = yourOrderItemServiceImpl.createOrderItem(shoppingCartId, yourOrder.getYourOrderId());
-        yourOrder.setTotalPrice(calculusTotalPrice(items));
-        return convertFromEntity(yourOrder, items);*/
         UserDTO userDTO = userServiceImpl.findById(shoppingCartId);
         YourOrder yourOrder = (YourOrder.builder()
                 .createAt(LocalDate.now())
@@ -92,12 +82,12 @@ public class YourOrderServiceImpl implements IYourOrderService {
      * @param items
      * @return
      */
-    private BigDecimal calculusTotalPrice(List<YourOrderItemDTO> items) {
-        BigDecimal totalPrice = items.stream()
+    private BigInteger calculusTotalPrice(List<YourOrderItemDTO> items) {
+        BigInteger totalPrice = items.stream()
                 .map(item -> item.getProductDTO()
                         .getSellingPrice()
-                        .multiply(BigDecimal.valueOf(item.getProductQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        .multiply(BigInteger.valueOf(item.getProductQuantity())))
+                .reduce(BigInteger.ZERO, BigInteger::add);
         return totalPrice;
     }
 

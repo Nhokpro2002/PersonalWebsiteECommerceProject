@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Data
 @Entity
@@ -24,6 +25,6 @@ public class ShoppingCart {
     private Long customerId;
 
     @Column(name = "shoppingCart_totalPrice")
-    private BigDecimal totalPrice;
+    private BigInteger totalPrice;
 
 }

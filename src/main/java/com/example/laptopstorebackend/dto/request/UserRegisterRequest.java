@@ -1,33 +1,33 @@
 package com.example.laptopstorebackend.dto.request;
 
 import com.example.laptopstorebackend.constant.UserRole;
-import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 public class UserRegisterRequest {
+
+    @NotBlank(message = "Email cannot have spaces")
+    @NotEmpty(message = "Email is required")
     private String email;
 
-    @NotEmpty(message = "Field last name can't empty")
-    @NotBlank(message = "Field last name can't blank")
+    @NotEmpty(message = "Last name is required")
+    @NotBlank(message = "Last name cannot have spaces")
     private String lastName;
 
-    @NotEmpty(message = "Field address can't empty")
+    @NotEmpty(message = "Address is required")
     private String address;
 
-    @NotEmpty(message = "Field first name can't empty")
-    @NotBlank(message = "Field first name can't blank")
+    @NotEmpty(message = "First name is required")
+    @NotBlank(message = "First name cannot have spaces")
     private String firstName;
 
-    @NotEmpty(message = "Field user name can't empty")
-    @NotBlank(message = "Field user name can't blank")
+    @NotEmpty(message = "User name is required")
+    @NotBlank(message = "User name cannot have spaces")
     @Size(min = 5, message = "User name must have at least 5 characters")
     private String userName;
 
-    @NotEmpty(message = "Field user password can't empty")
+    @NotEmpty(message = "Password not empty")
     @Size(min = 8, message = "Password must have at least 8 characters")
     @Pattern(
             regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$",
@@ -37,6 +37,5 @@ public class UserRegisterRequest {
 
     @NotNull(message = "User role is required")
     private UserRole userRole;
-
 
 }

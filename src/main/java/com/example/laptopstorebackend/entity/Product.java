@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Entity
 @Data
@@ -28,10 +28,10 @@ public class Product {
     private String description;
 
     @Column(name = "import_price")
-    private BigDecimal importingPrice;
+    private BigInteger importingPrice;
 
     @Column(name = "sell_price")
-    private BigDecimal sellingPrice;
+    private BigInteger sellingPrice;
 
     @Column(name = "product_stock")
     private Integer stock;

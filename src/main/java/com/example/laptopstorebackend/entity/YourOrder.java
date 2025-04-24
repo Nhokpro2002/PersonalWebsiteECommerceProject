@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Data
@@ -38,7 +39,7 @@ public class YourOrder {
     private YourOrderStatus yourOrderStatus;
 
     @Column(name = "yourOrder_totalPrice")
-    private BigDecimal totalPrice;
+    private BigInteger totalPrice;
 
     private LocalDate createAt;
 

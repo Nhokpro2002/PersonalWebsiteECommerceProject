@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 @Data
@@ -23,7 +24,7 @@ public class YourOrderDTO {
     private List<YourOrderItemDTO> items;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    private BigDecimal totalPrice;
+    private BigInteger totalPrice;
 
     @JsonSerialize(using = ToStringSerializer.class)
     private YourOrderStatus yourOrderStatus;

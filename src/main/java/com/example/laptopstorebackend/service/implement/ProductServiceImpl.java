@@ -1,17 +1,18 @@
 package com.example.laptopstorebackend.service.implement;
 
+import com.example.laptopstorebackend.constant.Category;
 import com.example.laptopstorebackend.dto.ProductDTO;
 import com.example.laptopstorebackend.entity.Product;
 import com.example.laptopstorebackend.exception.ResourceNotFoundException;
 import com.example.laptopstorebackend.repository.ProductRepository;
 import com.example.laptopstorebackend.service.interfaces.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.List;
+import java.math.BigInteger;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +25,10 @@ public class ProductServiceImpl implements IProductService {
      * @return
      */
     @Override
-    public List<ProductDTO> findAll() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(this::convertFromEntity)
-                .collect(Collectors.toList());
+    public Page<ProductDTO> findAll(int page, int size ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> products = productRepository.findAll(pageable);
+        return products.map(this::convertFromEntity);
     }
 
     /**
@@ -76,7 +76,7 @@ public class ProductServiceImpl implements IProductService {
      * @return
      */
     @Override
-    public ProductDTO updateSellingPrice(BigDecimal sellingPrice, Long id) {
+    public ProductDTO updateSellingPrice(BigInteger sellingPrice, Long id) {
         Optional<Product> optionalExistingProduct = productRepository.findById(id);
 
         if (optionalExistingProduct.isEmpty()) {
@@ -95,6 +95,13 @@ public class ProductServiceImpl implements IProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         existingProduct.setStock(newStock);
         productRepository.save(existingProduct);
+    }
+
+    @Override
+    public Page<ProductDTO> findByCategory(int page, int size, Category category) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> products = productRepository.findAllByCategory(category, pageable);
+        return products.map(this::convertFromEntity);
     }
 
     /**

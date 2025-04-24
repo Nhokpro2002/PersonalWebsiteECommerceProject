@@ -10,7 +10,7 @@ import com.example.laptopstorebackend.service.interfaces.IShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -80,11 +80,11 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
     private ShoppingCartDTO buildShoppingCartDTO(Long shoppingCartId) {
         List<ShoppingCartItemDTO> itemDTOS = shoppingCartItemServiceImpl.findAll(shoppingCartId);
 
-        BigDecimal totalPrice = itemDTOS.stream()
+        BigInteger totalPrice = itemDTOS.stream()
                 .map(item -> item.getProductDTO()
                         .getSellingPrice()
-                        .multiply(BigDecimal.valueOf(item.getProductQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        .multiply(BigInteger.valueOf(item.getProductQuantity())))
+                .reduce(BigInteger.ZERO, BigInteger::add);
 
         ShoppingCart shoppingCart = shoppingCartRepository.findById(shoppingCartId)
                 .orElseThrow(() -> new ResourceNotFoundException("Shopping Cart not found"));
