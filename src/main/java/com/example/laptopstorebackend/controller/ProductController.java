@@ -18,6 +18,15 @@ public class ProductController {
 
     private final ProductServiceImpl productServiceImpl;
 
+    @GetMapping("/size")
+    public ApiResponse<Integer> countNumberItems() {
+        return ApiResponse.<Integer>builder()
+                .code(200)
+                .message("Size inventory")
+                .data(productServiceImpl.countNumberItems())
+                .build();
+    }
+
     /**
      *
      * @param page

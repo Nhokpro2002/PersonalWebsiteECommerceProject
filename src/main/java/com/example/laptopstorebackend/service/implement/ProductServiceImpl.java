@@ -12,7 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,12 @@ public class ProductServiceImpl implements IProductService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products = productRepository.findAll(pageable);
         return products.map(this::convertFromEntity);
+    }
+
+    @Override
+    public Integer countNumberItems() {
+        List<Product> products = productRepository.findAll();
+        return products.size();
     }
 
     /**

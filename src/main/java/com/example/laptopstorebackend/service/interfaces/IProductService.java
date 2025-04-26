@@ -17,6 +17,7 @@ public interface IProductService {
     ProductDTO deleteById(Long id);
     ProductDTO updateSellingPrice(BigInteger sellingPrice, Long id);
     Page<ProductDTO> findAll(int page, int size );
+    Integer countNumberItems();
     void updateStock(Integer newStock, String productName);
     Page<ProductDTO> findByCategory(int page, int size, Category category);
 }
