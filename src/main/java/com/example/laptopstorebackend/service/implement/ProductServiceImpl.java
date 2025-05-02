@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +32,10 @@ public class ProductServiceImpl implements IProductService {
         return products.map(this::convertFromEntity);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Integer countNumberItems() {
         List<Product> products = productRepository.findAll();

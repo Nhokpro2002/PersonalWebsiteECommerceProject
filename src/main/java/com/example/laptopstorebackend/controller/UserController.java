@@ -33,6 +33,11 @@ public class UserController {
                 .build();
     }
 
+    /**
+     *
+     * @param userLoginRequest
+     * @return
+     */
     @PostMapping("/login")
     public ApiResponse<Jwt> login(@RequestBody UserLoginRequest userLoginRequest) {
         return ApiResponse.<Jwt>builder()
@@ -42,12 +47,29 @@ public class UserController {
                 .build();
     }
 
+    /**
+     *
+     * @return
+     */
     @GetMapping
     public ApiResponse<List<UserDTO>> findAll() {
         return ApiResponse.<List<UserDTO>>builder()
                 .code(200)
                 .message("Get all users successfully")
                 .data(userServiceImpl.findAllUser())
+                .build();
+    }
+
+    /**
+     *
+     * @return
+     */
+    @GetMapping("/size")
+    public ApiResponse<Integer> countUserNumber() {
+        return ApiResponse.<Integer>builder()
+                .code(200)
+                .message("User quantity: ")
+                .data(userServiceImpl.countUserNumber())
                 .build();
     }
 }

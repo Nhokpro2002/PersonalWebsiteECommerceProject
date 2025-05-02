@@ -40,8 +40,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/items")
-    public ApiResponse<ShoppingCartDTO> createShoppingCartItem(//@RequestParam Long shoppingCartId,
-                                                               HttpServletRequest request,
+    public ApiResponse<ShoppingCartDTO> createShoppingCartItem(HttpServletRequest request,
                                                                @RequestParam Long productId,
                                                                @RequestParam Integer quantity
                                                                ) {
@@ -56,8 +55,7 @@ public class ShoppingCartController {
     }
 
     @PatchMapping("/addition")
-    public ApiResponse<ShoppingCartDTO> addItem(//@RequestParam Long shoppingCartId,
-                                                HttpServletRequest request,
+    public ApiResponse<ShoppingCartDTO> addItem(HttpServletRequest request,
                                                 @RequestParam Long productId) {
         String token = extractTokenFromHeader(request);
         Long userId = jwtServiceImpl.extractUserId(token);
@@ -70,8 +68,7 @@ public class ShoppingCartController {
     }
 
     @PatchMapping("/reduction")
-    public ApiResponse<ShoppingCartDTO> reduceItem(//@RequestParam Long shoppingCartId,
-                                                   HttpServletRequest request,
+    public ApiResponse<ShoppingCartDTO> reduceItem(HttpServletRequest request,
                                                    @RequestParam Long productId) {
 
         String token = extractTokenFromHeader(request);

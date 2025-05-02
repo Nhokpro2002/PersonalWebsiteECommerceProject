@@ -15,4 +15,6 @@ public interface IYourOrderService {
     YourOrderDTO changeYourOrderStatus(Long yourOrderId, YourOrderStatus newStatus);
 
     YourOrderDTO getYourOrder(Long yourOrderId);
+
+    Integer countOrderNumber();
 }

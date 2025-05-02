@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getId(),
                 user.getUserName(),
                 user.getUserPassword(),
-                List.of(() -> "ROLE_" + user.getUserRole().name())
+                List.of(() -> "ROLE_" + user.getUserRole())
         );
     }
 

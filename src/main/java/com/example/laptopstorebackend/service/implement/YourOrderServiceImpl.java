@@ -79,6 +79,15 @@ public class YourOrderServiceImpl implements IYourOrderService {
 
     /**
      *
+     * @return
+     */
+    @Override
+    public Integer countOrderNumber() {
+        return (int) yourOrderRepository.count();
+    }
+
+    /**
+     *
      * @param items
      * @return
      */

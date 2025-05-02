@@ -64,6 +64,15 @@ public class YourOrderController {
                 .build();
     }
 
+    @GetMapping("/size")
+    public ApiResponse<Integer> countOrderNumber() {
+        return ApiResponse.<Integer>builder()
+                .code(200)
+                .message("Order quantity: ")
+                .data(yourOrderServiceImpl.countOrderNumber())
+                .build();
+    }
+
     /**
      *
      * @param request

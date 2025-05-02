@@ -11,10 +11,12 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
     Optional<Object> findByProductName(String productName);
 
     @Override
     Page<Product> findAll(Pageable pageable);
 
     Page<Product> findAllByCategory(Category category, Pageable pageable);
+
 }

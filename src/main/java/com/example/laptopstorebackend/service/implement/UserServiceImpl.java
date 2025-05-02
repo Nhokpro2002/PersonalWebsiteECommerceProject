@@ -17,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.laptopstorebackend.dto.Jwt;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -87,8 +86,7 @@ public class UserServiceImpl implements IUserService {
                 userLoginRequest.getUserPassword()));
         CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
         Long userId = customUserDetails.getUserId();
-        String token = jwtServiceImpl.generateToken(auth.getName(), userId);
-        System.out.println(token);
+        String token = jwtServiceImpl.generateToken(auth.getName(), userId, customUserDetails.getAuthorities());
         return new Jwt(token);
     }
 
@@ -109,4 +107,12 @@ public class UserServiceImpl implements IUserService {
                 .build();
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Integer countUserNumber() {
+        return (int) userRepository.count();
+    }
 }
