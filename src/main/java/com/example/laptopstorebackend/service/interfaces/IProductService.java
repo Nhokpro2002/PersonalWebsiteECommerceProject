@@ -18,6 +18,7 @@ public interface IProductService {
     ProductDTO updateSellingPrice(BigInteger sellingPrice, Long id);
     Page<ProductDTO> findAll(int page, int size );
     Integer countNumberItems();
+    Integer countNumberItemsByCategory(Category category);
     void updateStock(Integer newStock, String productName);
     Page<ProductDTO> findByCategory(int page, int size, Category category);
 }

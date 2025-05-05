@@ -27,6 +27,15 @@ public class ProductController {
                 .build();
     }
 
+    @GetMapping("/category/size")
+    public ApiResponse<Integer> countNumberItemsByCategory(@RequestParam Category category) {
+        return ApiResponse.<Integer>builder()
+                .code(200)
+                .message("Size inventory")
+                .data(productServiceImpl.countNumberItemsByCategory(category))
+                .build();
+    }
+
     /**
      *
      * @param page

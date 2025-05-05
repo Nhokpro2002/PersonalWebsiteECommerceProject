@@ -38,8 +38,16 @@ public class ProductServiceImpl implements IProductService {
      */
     @Override
     public Integer countNumberItems() {
-        List<Product> products = productRepository.findAll();
-        return products.size();
+        return Math.toIntExact(productRepository.count());
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Integer countNumberItemsByCategory(Category category) {
+        return Math.toIntExact(productRepository.countByCategory(category));
     }
 
     /**
