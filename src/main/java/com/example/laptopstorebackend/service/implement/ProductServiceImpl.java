@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +28,20 @@ public class ProductServiceImpl implements IProductService {
     public Page<ProductDTO> findAll(int page, int size ) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products = productRepository.findAll(pageable);
+        return products.map(this::convertFromEntity);
+    }
+
+    /**
+     *
+     * @param keyword
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public Page<ProductDTO> findByKeyword(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> products = productRepository.findByProductNameContainingIgnoreCase(keyword, pageable);
         return products.map(this::convertFromEntity);
     }
 
@@ -116,6 +129,13 @@ public class ProductServiceImpl implements IProductService {
         productRepository.save(existingProduct);
     }
 
+    /**
+     *
+     * @param page
+     * @param size
+     * @param category
+     * @return
+     */
     @Override
     public Page<ProductDTO> findByCategory(int page, int size, Category category) {
         Pageable pageable = PageRequest.of(page, size);

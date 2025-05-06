@@ -27,6 +27,17 @@ public class ProductController {
                 .build();
     }
 
+    @GetMapping("/keyword")
+    public ApiResponse<Page<ProductDTO>> findByKeyword(@RequestParam String keyword,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "9") int size) {
+        return ApiResponse.<Page<ProductDTO>>builder()
+                .code(200)
+                .message("Size inventory")
+                .data(productServiceImpl.findByKeyword(keyword, page, size))
+                .build();
+    }
+
     @GetMapping("/category/size")
     public ApiResponse<Integer> countNumberItemsByCategory(@RequestParam Category category) {
         return ApiResponse.<Integer>builder()
