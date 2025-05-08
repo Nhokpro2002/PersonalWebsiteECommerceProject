@@ -29,13 +29,14 @@ public class UserRegisterRequest {
 
     @NotEmpty(message = "Password not empty")
     @Size(min = 8, message = "Password must have at least 8 characters")
+    @NotBlank(message = "Password cannot be blank")
     @Pattern(
-            regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$",
-            message = "Password must contain both letters and numbers"
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
+            message = "Password must contain letters, numbers, and at least one special character"
     )
     private String userPassword;
 
-    @NotNull(message = "User role is required")
-    private UserRole userRole;
+    //@NotNull(message = "User role is required")
+    //private UserRole userRole;
 
 }

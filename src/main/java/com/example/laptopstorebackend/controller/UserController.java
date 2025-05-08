@@ -27,6 +27,7 @@ public class UserController {
      */
     @PostMapping("/register")
     public ApiResponse<UserDTO> register(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
+        System.out.println("Password: '" + userRegisterRequest.getUserPassword() + "'");
         return ApiResponse.<UserDTO>builder()
                 .code(200)
                 .message("Register successfully")
