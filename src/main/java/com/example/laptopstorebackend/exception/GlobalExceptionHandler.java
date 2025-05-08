@@ -1,5 +1,8 @@
 package com.example.laptopstorebackend.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -62,5 +65,22 @@ public class GlobalExceptionHandler {
         errorResponse.setMessage(e.getMessage());
 
         return errorResponse;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(UNAUTHORIZED)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Incorrect username or password ", request);
+    }
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String message, WebRequest request) {
+        ErrorResponse error = new ErrorResponse();
+        error.setTimestamp(LocalDateTime.now());
+        error.setPath(request.getDescription(false).replace("uri=", ""));
+        error.setStatus(status.value());
+        error.setError(status.getReasonPhrase());
+        error.setMessage(message);
+
+        return new ResponseEntity<>(error, status);
     }
 }

@@ -7,6 +7,7 @@ import com.example.laptopstorebackend.dto.request.UserRegisterRequest;
 import com.example.laptopstorebackend.dto.response.ApiResponse;
 import com.example.laptopstorebackend.service.implement.UserServiceImpl;
 import com.example.laptopstorebackend.dto.Jwt;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public ApiResponse<UserDTO> register(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public ApiResponse<UserDTO> register(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
         return ApiResponse.<UserDTO>builder()
                 .code(200)
                 .message("Register successfully")

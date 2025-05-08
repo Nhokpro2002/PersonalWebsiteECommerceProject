@@ -71,14 +71,16 @@ public class UserServiceImpl implements IUserService {
                 .userRole(UserRole.CUSTOMER)
                 .build();
         user = userRepository.save(user);
+        System.out.println("Đã chạy tới service!");
         // user register successfully => create Shopping Cart for user (userId == shoppingCartId)
         shoppingCartServiceImpl.createShoppingCart(user.getId());
+
         return convertFromEntity(user);
     }
 
     /**
      *
-     * //@param userLoginRequest
+     * @param userLoginRequest
      */
     public Jwt login(UserLoginRequest userLoginRequest) {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
