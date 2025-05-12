@@ -2,6 +2,7 @@
 package com.example.laptopstorebackend.controller;
 
 import com.example.laptopstorebackend.dto.UserDTO;
+import com.example.laptopstorebackend.dto.request.FacebookTokenRequest;
 import com.example.laptopstorebackend.dto.request.UserLoginRequest;
 import com.example.laptopstorebackend.dto.request.UserRegisterRequest;
 import com.example.laptopstorebackend.dto.response.ApiResponse;
@@ -74,5 +75,10 @@ public class UserController {
                 .data(userServiceImpl.countUserNumber())
                 .build();
     }
+
+    /*@PostMapping("/oauth/facenook")
+    public ApiResponse<Jwt> loginByFacebook(@RequestBody FacebookTokenRequest facebookTokenRequest) {
+        String accessToken = facebookTokenRequest.getAccessToken();
+    }*/
 }
 

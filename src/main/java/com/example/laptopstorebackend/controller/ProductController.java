@@ -28,22 +28,13 @@ public class ProductController {
     }
 
     @GetMapping("/keyword")
-    public ApiResponse<Page<ProductDTO>> findByKeyword(@RequestParam String keyword,
-                                                       @RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "9") int size) {
+    public ApiResponse<Page<ProductDTO>> findByKeyword(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "9") int size,
+                                                       @RequestParam String keyword) {
         return ApiResponse.<Page<ProductDTO>>builder()
                 .code(200)
                 .message("Size inventory")
                 .data(productServiceImpl.findByKeyword(keyword, page, size))
-                .build();
-    }
-
-    @GetMapping("/category/size")
-    public ApiResponse<Integer> countNumberItemsByCategory(@RequestParam Category category) {
-        return ApiResponse.<Integer>builder()
-                .code(200)
-                .message("Size inventory")
-                .data(productServiceImpl.countNumberItemsByCategory(category))
                 .build();
     }
 
@@ -66,8 +57,8 @@ public class ProductController {
     @GetMapping("/category")
     public ApiResponse<Page<ProductDTO>> findAllByCategory(@RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "9") int size,
-                                                        @RequestParam Category productCategory) {
-        Page<ProductDTO> productDTOList = productServiceImpl.findByCategory(page, size, productCategory);
+                                                        @RequestParam Category category) {
+        Page<ProductDTO> productDTOList = productServiceImpl.findByCategory(page, size, category);
         return ApiResponse.<Page<ProductDTO>>builder()
                 .code(200)
                 .message("List products have same Category")

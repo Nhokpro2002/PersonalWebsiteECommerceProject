@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.laptopstorebackend.dto.Jwt;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -90,6 +91,15 @@ public class UserServiceImpl implements IUserService {
         String token = jwtServiceImpl.generateToken(auth.getName(), userId, customUserDetails.getAuthorities());
         return new Jwt(token);
     }
+/*
+    @PostMapping("/oauth/facebook")
+    public ResponseEntity<ApiResponse<Jwt>> facebookLogin(@RequestBody FacebookTokenRequest request) {
+        String accessToken = request.getAccessToken();
+        FacebookUserInfo userInfo = facebookService.verifyTokenAndGetUser(accessToken);
+
+        Jwt jwt = userService.loginWithFacebook(userInfo);
+        return ResponseEntity.ok(ApiResponse.success("Login with Facebook successful", jwt));
+    }*/
 
     /**
      *
