@@ -47,6 +47,28 @@ public class UserServiceImpl implements IUserService {
 
     /**
      *
+     * @param userId
+     * @param newAddress
+     * @return
+     */
+    public UserDTO updateUserInfo(Long userId, String newAddress) {
+
+        /*User user = userRepository.findById(userId).orElseThrow();
+        user.setAddress(newAddress);
+        userRepository.save(user);
+        return convertFromEntity(user);*/
+        Optional<User> user = userRepository.findById(userId);
+        if (newAddress.isEmpty() || user.isEmpty()) {
+            throw new RuntimeException("Error and Nhokpro2002 wouldn't fix the error, OK!");
+        }
+        User realUser = user.get();
+        realUser.setAddress(newAddress);
+        userRepository.save(realUser);
+        return convertFromEntity(realUser);
+    }
+
+    /**
+     *
      * @return
      */
     public List<UserDTO> findAllUser() {
@@ -91,15 +113,6 @@ public class UserServiceImpl implements IUserService {
         String token = jwtServiceImpl.generateToken(auth.getName(), userId, customUserDetails.getAuthorities());
         return new Jwt(token);
     }
-/*
-    @PostMapping("/oauth/facebook")
-    public ResponseEntity<ApiResponse<Jwt>> facebookLogin(@RequestBody FacebookTokenRequest request) {
-        String accessToken = request.getAccessToken();
-        FacebookUserInfo userInfo = facebookService.verifyTokenAndGetUser(accessToken);
-
-        Jwt jwt = userService.loginWithFacebook(userInfo);
-        return ResponseEntity.ok(ApiResponse.success("Login with Facebook successful", jwt));
-    }*/
 
     /**
      *
