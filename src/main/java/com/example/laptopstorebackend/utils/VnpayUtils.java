@@ -16,7 +16,7 @@ public class VnpayUtils {
     private static final String VNP_TMN_CODE = "M4ADTD6U";
     private static final String VNP_HASH_SECRET = "MJZMOXL1D8B5IM9MUCGG4HGCRMKK2SG3";
     private static final String VNP_PAY_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    private  static final String VNP_BANKCODE = "VNPAYQR";
+    //private  static final String VNP_BANKCODE = "VNPAYQR";
 
     public static String getRandomTxnRef() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
@@ -36,8 +36,6 @@ public class VnpayUtils {
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", returnUrl);
         vnp_Params.put("vnp_IpAddr", ipAddr);
-        //vnp_Params.put("vnp_BankCode", VNP_BANKCODE);
-        //vnp_Params.put("vnp_SecureHash", VNP_HASH_SECRET);
 
         //
         vnp_Params.put("vnp_ExpireDate", LocalDateTime.now().plusMinutes(10).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
@@ -60,17 +58,17 @@ public class VnpayUtils {
             }
         }
 
-        // Xoá dấu & cuối
+        // Delete character last "&"
         if (!hashData.isEmpty()) {
             hashData.setLength(hashData.length() - 1);
             query.setLength(query.length() - 1);
         }
 
-        // Tạo checksum
+        // Create checksum
         String vnp_SecureHash = hmacSHA512(VNP_HASH_SECRET, hashData.toString());
         query.append("&vnp_SecureHash=").append(vnp_SecureHash);
 
-        return VNP_PAY_URL + "?" + query.toString();
+        return VNP_PAY_URL + "?" + query;
     }
 
     public static String hmacSHA512(String key, String data) {
@@ -85,8 +83,4 @@ public class VnpayUtils {
         }
     }
 
-    /*private LocalDateTime afterTenMinuteFromNow(LocalDateTime timeRightNow) {
-        return timeRightNow.plusMinutes(10);
-
-    }*/
 }
