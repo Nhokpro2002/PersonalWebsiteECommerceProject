@@ -1,6 +1,6 @@
 package com.example.laptopstorebackend.service.implement;
 
-//import com.example.laptopstorebackend.dto.FacebookUserInfo;
+import com.example.laptopstorebackend.dto.FacebookUserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -44,20 +44,19 @@ public class FacebookServiceImpl {
      * @param accessToken
      * @return
      */
-//    public FacebookUserInfo getFacebookUser(String accessToken) {
-//        String url = UriComponentsBuilder
-//                .fromHttpUrl("https://graph.facebook.com/me")
-//                .queryParam("fields", "id,name,email")
-//                .queryParam("access_token", accessToken)
-//                .toUriString();
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        try {
-//            return restTemplate.getForObject(url, FacebookUserInfo.class);
-//        } catch (RestClientException e) {
-//            throw new RuntimeException("Failed to fetch user info from Facebook", e);
-//        }
-//    }
+    public FacebookUserInfo getFacebookUser(String accessToken) {
+        String url = UriComponentsBuilder
+                .fromHttpUrl("https://graph.facebook.com/me")
+                .queryParam("fields", "id,name,email")
+               .queryParam("access_token", accessToken)
+                .toUriString();
 
+        RestTemplate restTemplate = new RestTemplate();
+       try {
+           return restTemplate.getForObject(url, FacebookUserInfo.class);
+       } catch (RestClientException e) {
+            throw new RuntimeException("Failed to fetch user info from Facebook", e);
+        }
+    }
 
 }

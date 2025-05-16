@@ -1,4 +1,3 @@
-/*
 
 package com.example.laptopstorebackend.controller;
 
@@ -38,17 +37,17 @@ public class FacebookLoginController {
                 .build();
     }
 
-   */
-/* @GetMapping("/userInfo")
+
+ @GetMapping("/userInfo")
     public ApiResponse<FacebookUserInfo> getUserInfo(@RequestParam String token) {
         return ApiResponse.<FacebookUserInfo>builder()
                 .code(200)
                 .message("change code -> token success")
                 .data(facebookServiceImpl.getFacebookUser(token))
                 .build();
-    }*//*
+    }
 
 
 }
 
-*/
+

@@ -35,16 +35,16 @@ public class SecurityConfig {
                         .requestMatchers("/users/login",
                                 "/users/register",
                                 "/images/**", "/api/**",
-                                "/facebook/oauth").permitAll()
+                                "/facebook/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-                /*.oauth2Login(oauth2 -> oauth2
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2 -> oauth2
                         .loginPage("/oauth2/authorization/facebook") // frontend gọi URL này để login
-                        .defaultSuccessUrl("/home-page", true));*/
+                        .defaultSuccessUrl("/home-page", true));
 
         return http.build();
     }
